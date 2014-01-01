@@ -2,3 +2,8 @@ Scala Koans Online
 ==================
 
 Learn Scala from anywhere
+
+This project gives ability to perform Scala Koans (http://www.scalakoans.org/) from browser
+
+Online code editor is Ace (http://ace.c9.io)
+
