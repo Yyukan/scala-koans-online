@@ -31,9 +31,14 @@ class KoansSpec extends Specification {
       koanSource must have size(1650)
     }
 
-    "test koans size " in {
+    "test koans size" in {
       KoansParser.parse(koanSource).size shouldEqual 3
     }
+
+    "test some pattern" in {
+      true == true
+    }
+
   }
 }
 
@@ -45,6 +50,7 @@ object KoansParser {
 
   def parse(source: String):Seq[Koan] = {
     koanPattern.findAllMatchIn(source).map(koan => {
+      // did not find way to parse koan body, looking to ANTLR
       Koan("", koan.group(1))
     }).toSeq
   }
