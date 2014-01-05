@@ -47,37 +47,49 @@ case class Koan(description: String, content: String)
 
 object KoansParser {
 
+  /** koan description pattern */
   val koanPattern = """koan\(\"(.*)\"\)\s""".r
 
+  /**
+   * Finds and returns block of code between {}
+   *
+   * For example: some_method_name{ some block } returns "{ some block }".
+   * Nested parentheses are taken into account
+   */
   def block(code: String):String = {
 
-    def blockStart(block: String, brackets:Stack[Char], accumulator: String):String  = {
-      if (brackets.isEmpty) return accumulator
+    def blockMatcher(block: String, brackets:Stack[Char], result: String):String  = {
+      if (brackets.isEmpty) return result
 
       block.toList match {
-        case Nil => accumulator
+        case Nil => result
         case x :: xs => {
           x match {
-            case '}' => brackets.pop(); blockStart(xs.mkString, brackets, accumulator + '}')
-            case '{' => brackets.push('{'); blockStart(xs.mkString, brackets, accumulator + '{')
-            case  _ => blockStart(xs.mkString, brackets, accumulator + x)
+            case '}' => brackets.pop(); blockMatcher(xs.mkString, brackets, result + '}')
+            case '{' => brackets.push('{'); blockMatcher(xs.mkString, brackets, result + '{')
+            case  _ => blockMatcher(xs.mkString, brackets, result + x)
           }
         }
       }
     }
 
     code.toList match {
+      case Nil => ""
       case x :: xs => {
         x match {
-          case '{' => blockStart(xs.mkString, Stack('{'), "{")
+          case '{' => blockMatcher(xs.mkString, Stack('{'), "{")
           case _ => block(xs.mkString)
         }
       }
-      case Nil => ""
     }
   }
 
-
+  /**
+   * Finds all koans in source code
+   *
+   * @param source - code as string
+   * @return - sequence of koans
+   */
   def parse(source: String):Seq[Koan] = {
     koanPattern.findAllMatchIn(source).map(koan => {
       Koan(description = koan.group(1), content = block(source.substring(koan.start, source.length - 1)))
