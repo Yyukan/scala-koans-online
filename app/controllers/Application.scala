@@ -2,6 +2,9 @@ package controllers
 
 import play.api._
 import play.api.mvc._
+import models.Koan
+
+import scala.concurrent.ExecutionContext.Implicits.global
 // Reactive Mongo imports
 import reactivemongo.api._
 
@@ -15,16 +18,18 @@ object Application extends Controller with MongoController {
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def koans = Action {
+  def koans = Action.async {
+    import models.JsonFormats.koanFormat
 
     def collection: JSONCollection = db.collection[JSONCollection]("koans")
 
     Logger.info("Collections is " + collection)
 
-    // clone or sync koans from git
-    // get list of the sources with koans
-    // parse koans and save to storage
-    Ok(views.html.koans(collection.toString))
+    val user = Koan("first koan", "{first code}")
+    val futureResult = collection.insert(user)
+
+    // when the insert is performed, send a OK 200 result
+    futureResult.map(lastError => Ok(views.html.koans("Mongo LastError: %s".format(lastError))))
   }
 
 }
