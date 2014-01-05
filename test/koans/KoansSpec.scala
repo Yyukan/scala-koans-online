@@ -19,20 +19,30 @@ class KoansSpec extends Specification {
     resource.mkString
   }
 
-  def koanSource: String = resourceAsString("AboutAdvancedOptions")
-
+  def aboutAdvancedOptions: String = resourceAsString("AboutAdvancedOptions")
+  def aboutManifest: String = resourceAsString("AboutManifest")
+  
+  
   "Koan parser" should {
 
     "test koans source proper size" in {
-      koanSource must have size(1650)
+      aboutAdvancedOptions must have size(1650)
     }
 
     "test koans size" in {
-      val koans = KoansParser.parse(koanSource)
+      val koans = KoansParser.parse(aboutAdvancedOptions)
 
       koans.foreach(println(_))
 
       koans.size shouldEqual 3
+    }
+
+    "test parse about manifest " in {
+      val koans = KoansParser.parse(aboutManifest)
+
+      koans.foreach(println(_))
+
+      koans.size shouldEqual 2
     }
 
   }

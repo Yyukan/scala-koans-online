@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.Koan
+import models.{KoansParser, Koan}
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -27,6 +27,44 @@ object Application extends Controller with MongoController {
     import models.JsonFormats.koanFormat
 
     Logger.info("Collections is " + collection)
+
+    import sys.process._
+    import java.net.URL
+    import java.io.File
+
+    val zipFileName = "/tmp/koans.zip"
+    val file = new File(zipFileName)
+
+    if (!file.exists()) {
+      // download last koans archive
+      new URL("https://bitbucket.org/dmarsh/scalakoansexercises/get/tip.zip") #> new File(zipFileName) !!
+    }
+
+    val zip = new java.util.zip.ZipFile(zipFileName)
+
+    import scala.collection.JavaConverters._
+    val entries = zip.entries.asScala
+
+    val sources = entries.filter(entry => entry.getName().contains("/src/test/scala/org/functionalkoans/forscala/"))
+
+    val sourceMap:Map[String, String] = sources.flatMap{ entry =>
+      Map(entry.getName -> scala.io.Source.fromInputStream(zip.getInputStream(entry)).getLines().mkString("\n"))
+    }.toMap
+
+    var sum = 0
+
+    sourceMap.foreach {
+      case (key, value) => {
+
+        val koans = KoansParser.parse(value)
+        println("File " + key.substring(key.lastIndexOf("/"), key.length - 1) + "koans " + koans.size)
+        sum += koans.size
+      }
+    }
+
+    println("Koans size " + sum)
+
+
 
 
 

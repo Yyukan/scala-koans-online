@@ -8,7 +8,7 @@ import scala.collection._
 object KoansParser {
 
   /** koan description pattern */
-  val koanPattern = """koan\(\"(.*)\"\)\s""".r
+  val koanPattern = """koan\s*\(\s*\"{1,3}([\w\W]+?)\"{1,3}\s*\)""".r
 
   /**
    * Finds and returns block of code between {}
