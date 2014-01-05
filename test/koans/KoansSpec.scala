@@ -9,6 +9,7 @@ import play.api.test._
 
 import scala.io._
 import org.specs2.matcher.ShouldMatchers
+import scala.collection.mutable.Stack
 
 /**
  * Test for Koan parser
@@ -32,26 +33,54 @@ class KoansSpec extends Specification {
     }
 
     "test koans size" in {
-      KoansParser.parse(koanSource).size shouldEqual 3
-    }
+      val koans = KoansParser.parse(koanSource)
 
-    "test some pattern" in {
-      true == true
+      koans.foreach(println(_))
+
+      koans.size shouldEqual 3
     }
 
   }
 }
 
-case class Koan(content: String, description: String)
+case class Koan(description: String, content: String)
 
 object KoansParser {
 
   val koanPattern = """koan\(\"(.*)\"\)\s""".r
 
+  def block(code: String):String = {
+
+    def blockStart(block: String, brackets:Stack[Char], accumulator: String):String  = {
+      if (brackets.isEmpty) return accumulator
+
+      block.toList match {
+        case Nil => accumulator
+        case x :: xs => {
+          x match {
+            case '}' => brackets.pop(); blockStart(xs.mkString, brackets, accumulator + '}')
+            case '{' => brackets.push('{'); blockStart(xs.mkString, brackets, accumulator + '{')
+            case  _ => blockStart(xs.mkString, brackets, accumulator + x)
+          }
+        }
+      }
+    }
+
+    code.toList match {
+      case x :: xs => {
+        x match {
+          case '{' => blockStart(xs.mkString, Stack('{'), "{")
+          case _ => block(xs.mkString)
+        }
+      }
+      case Nil => ""
+    }
+  }
+
+
   def parse(source: String):Seq[Koan] = {
     koanPattern.findAllMatchIn(source).map(koan => {
-      // did not find way to parse koan body, looking to ANTLR
-      Koan("", koan.group(1))
+      Koan(description = koan.group(1), content = block(source.substring(koan.start, source.length - 1)))
     }).toSeq
   }
 }
