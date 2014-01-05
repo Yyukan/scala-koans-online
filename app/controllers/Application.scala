@@ -26,8 +26,11 @@ object Application extends Controller with MongoController {
   def koans = Action.async {
     import models.JsonFormats.koanFormat
 
-
     Logger.info("Collections is " + collection)
+
+
+
+
 
     val user = Koan("first koan", "{first code}")
     val futureResult = collection.insert(user)
