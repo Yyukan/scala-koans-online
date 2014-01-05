@@ -4,7 +4,10 @@ import play.api._
 import play.api.mvc._
 import models.Koan
 
+import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import play.api.libs.json._
+
 // Reactive Mongo imports
 import reactivemongo.api._
 
@@ -14,6 +17,8 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 
 object Application extends Controller with MongoController {
 
+  def collection: JSONCollection = db.collection[JSONCollection]("koans")
+
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
@@ -21,7 +26,6 @@ object Application extends Controller with MongoController {
   def koans = Action.async {
     import models.JsonFormats.koanFormat
 
-    def collection: JSONCollection = db.collection[JSONCollection]("koans")
 
     Logger.info("Collections is " + collection)
 
@@ -32,4 +36,16 @@ object Application extends Controller with MongoController {
     futureResult.map(lastError => Ok(views.html.koans("Mongo LastError: %s".format(lastError))))
   }
 
+
+  def koansAll = Action.async {
+    import models.JsonFormats.koanFormat
+
+    val cursor: Cursor[Koan] = collection.find(Json.obj()).cursor[Koan]
+
+    val result: Future[List[Koan]] = cursor.collect[List]()
+
+    result.map { result =>
+      Ok(result.toString)
+    }
+  }
 }
