@@ -1,35 +1,29 @@
 @* editor Template File *@
 @(selectedSuite:KoanSuite, suites:Seq[models.KoanSuite])
 
-@header("Scala Koans - Editor") {
- <div class="container">
-	<nav class="navbar navbar-default">
-  <div class="navbar-header">
-    <a class="navbar-brand" href="/">Scala Koans</a>
-  </div>
-  
-  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav">
-      <li class="dropdown">
-       <a href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
-        <ul class="dropdown-menu">
-        @suites.map { suite =>
-       		@if(suite == selectedSuite) {
-	        	<li class="disabled"><a href="#">@suite.name</a></li>
-   			} else {
-   				<li><a href="#">@suite.name</a></li>
-   			}   			
-       	}
-        </ul>
-      </li>
-    </ul>
-	<p class="navbar-text navbar-right">Signed in as SK</p>
+@main("Scala Koans - Editor") {
+	<!-- header -->
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    	<ul class="nav navbar-nav">
+      		<li class="dropdown">
+       			<a href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
+        		<ul class="dropdown-menu">
+        			@suites.map { suite =>
+       					@if(suite == selectedSuite) {
+	        				<li class="disabled"><a href="#">@suite.name</a></li>
+   						} else {
+   							<li><a href="#">@suite.name</a></li>
+   						}   			
+       				}
+        		</ul>
+      		</li>
+    	</ul>
+		<p class="navbar-text navbar-right">Signed in as SK</p>
     </div>
-  
-</nav>
-
-<div id="editor-container">
-<pre id="editor">
+} {
+<!-- body -->
+	<div id="editor-container">
+		<pre id="editor">
 
 koan("Character Literals are quoted with single quotes") {
     val a = 'a'
@@ -39,21 +33,8 @@ koan("Character Literals are quoted with single quotes") {
     b.toString should be(__)
 }
 
-
-
-</pre>
-</div>
-
-
-
-</div>
-
-	
-	<div id="footer">
-      <div class="container">
-        <p class="text-muted">Some footer.</p>
-      </div>
-    </div>
+		</pre>
+	</div>
     
     <script type='text/javascript' src='@routes.Assets.at("javascripts/editor.js")'></script>
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("src-noconflict/ace.js"))'></script>
