@@ -1,32 +1,5 @@
 @(message: String)
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Scala Koans Online</title>
-    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-</head>
-<body>
-
-<pre id="editor">
-
-koan("Character Literals are quoted with single quotes") {
-    val a = 'a'
-    val b = 'B'
-
-    a.toString should be(__)
-    b.toString should be(__)
+@header("Welcome to Koans Online") {
+		<a class="btn btn-default" href="editor" role="button">Start Koans</a>
 }
-</pre>
-
-<script src="@routes.Assets.at("javascripts/src-noconflict/ace.js")" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/eclipse");
-    editor.getSession().setMode("ace/mode/scala");
-</script>
-
-</body>
-</html>

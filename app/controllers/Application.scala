@@ -2,25 +2,40 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.{KoansParser, Koan}
-
+import models.{ KoansParser, Koan }
+import scala.concurrent._
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json._
-
-// Reactive Mongo imports
 import reactivemongo.api._
-
-// Reactive Mongo plugin, including the JSON-specialized collection
 import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
+import akka.actor.ActorSystem
+import akka.actor.ActorRef
+import akka.actor.Props
+import actors.KoanActor
+import akka.pattern.{ ask, pipe }
+import akka.util.Timeout
+import scala.concurrent.duration._
+import models.KoanSuite
 
 object Application extends Controller with MongoController {
 
   def collection: JSONCollection = db.collection[JSONCollection]("koans")
 
+  val system = ActorSystem("ScalaKoansSystem")
+  implicit val timeout = Timeout(5 seconds) // needed for `?` below
+  val koanActor: ActorRef = system.actorOf(Props[KoanActor], "KoanActor")
+
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
+  }
+
+  def editor = Action.async {
+    val suites = (koanActor ? KoanActor.ListAllSuites).mapTo[KoanActor.SuitesResult]
+    suites.map { s =>
+      Ok(views.html.editor(s.suites.head, s.suites))
+    }
   }
 
   def koans = Action.async {
@@ -47,7 +62,7 @@ object Application extends Controller with MongoController {
 
     val sources = entries.filter(entry => entry.getName().contains("/src/test/scala/org/functionalkoans/forscala/"))
 
-    val sourceMap:Map[String, String] = sources.flatMap{ entry =>
+    val sourceMap: Map[String, String] = sources.flatMap { entry =>
       Map(entry.getName -> scala.io.Source.fromInputStream(zip.getInputStream(entry)).getLines().mkString("\n"))
     }.toMap
 
@@ -64,19 +79,12 @@ object Application extends Controller with MongoController {
 
     println("Koans size " + sum)
 
-
-
-
-
-
-
     val user = Koan("first koan", "{first code}")
     val futureResult = collection.insert(user)
 
     // when the insert is performed, send a OK 200 result
     futureResult.map(lastError => Ok(views.html.koans("Mongo LastError: %s".format(lastError))))
   }
-
 
   def koansAll = Action.async {
     import models.JsonFormats.koanFormat

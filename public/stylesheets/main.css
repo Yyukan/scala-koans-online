@@ -1,6 +1,11 @@
 
+html,body{
+    height: 100%
+}
+
+
 body {
-  overflow: hidden;
+ overflow: hidden; 
 }
 
 #editor {
@@ -11,3 +16,9 @@ body {
   left: 0;
   right: 0;
 }
+
+#editor-container {
+    position: relative;
+    height: 500px;
+}
+

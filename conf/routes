@@ -5,6 +5,9 @@
 # Home page
 GET   /                controllers.Application.index
 
+# Editor
+GET   /editor          controllers.Application.editor
+
 # Parse Koans
 GET   /koans           controllers.Application.koans
 GET   /koansAll        controllers.Application.koansAll
