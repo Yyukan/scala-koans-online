@@ -28,14 +28,21 @@ object Application extends Controller with MongoController {
   val koanActor: ActorRef = system.actorOf(Props[KoanActor], "KoanActor")
 
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.index())
   }
 
   def editor = Action.async {
     val suites = (koanActor ? KoanActor.ListAllSuites).mapTo[KoanActor.SuitesResult]
     suites.map { s =>
-      Ok(views.html.editor(s.suites.head, s.suites))
+      val suite = s.suites.head
+      Ok(views.html.editor(suite.koanIds.head, suite, s.suites))
     }
+  }
+
+  def koan(id: Long) = Action.async {
+    import models.JsonFormats.koanFormat
+    val koan = (koanActor ? KoanActor.GetKoan(id)).mapTo[KoanActor.KoanResult]
+    koan.map { k => Ok(Json.toJson(k.koan)) }
   }
 
   def koans = Action.async {

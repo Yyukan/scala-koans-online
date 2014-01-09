@@ -24,8 +24,12 @@ class KoanActor extends Actor {
   import KoanActor._
 
   override def receive = {
-    case ListAllSuites => sender ! SuitesResult(List(KoanSuite("TestSuite1", List(1, 2)), KoanSuite("TestSuite2", List(3, 4))))
-    case GetKoan(id) => sender ! KoanResult(Koan("Test Description", "Test Content"))
+    case ListAllSuites => sender ! SuitesResult(List(KoanSuite("TestSuite1", List(1, 2)),
+      KoanSuite("TestSuite2", List(3, 4))))
+    case GetKoan(id) => sender ! KoanResult(Koan("Test Description 1", s"""
+koan("some koan ${id}") { 
+    println("id=${id}") 
+}"""))
     case _ =>
   }
 

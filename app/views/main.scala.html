@@ -1,5 +1,5 @@
 @* main Template File *@
-@(title : String)(header:Html)(body:Html)
+@(title : String)(header:Html)(body:Html)(footer:Html)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,8 @@
 	</div>
 	<div id="footer">
       <div class="container">
-        <p class="text-muted">Some footer.</p>
+        <p class="text-muted pull-left">Some footer.</p>
+        @footer
       </div>
     </div>
 </body>

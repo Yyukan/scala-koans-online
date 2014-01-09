@@ -1,5 +1,5 @@
 @* editor Template File *@
-@(selectedSuite:KoanSuite, suites:Seq[models.KoanSuite])
+@(koanId:Long, selectedSuite:KoanSuite, suites:Seq[models.KoanSuite])
 
 @main("Scala Koans - Editor") {
 	<!-- header -->
@@ -21,23 +21,25 @@
 		<p class="navbar-text navbar-right">Signed in as SK</p>
     </div>
 } {
-<!-- body -->
+	<!-- body -->
+	<div class="meta">
+		<koan-id>@koanId</koan-id>
+		<suite>{"ids":[@selectedSuite.koanIds.mkString(",")]}</suite>
+	</div>
 	<div id="editor-container">
-		<pre id="editor">
-
-koan("Character Literals are quoted with single quotes") {
-    val a = 'a'
-    val b = 'B'
-
-    a.toString should be(__)
-    b.toString should be(__)
-}
-
-		</pre>
+		<pre id="editor"></pre>
 	</div>
     
     <script type='text/javascript' src='@routes.Assets.at("javascripts/editor.js")'></script>
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("src-noconflict/ace.js"))'></script>
+} {
+	<!-- footer -->
+	<div class="pull-right">
+		<ul class="pager">
+  			<li class="previous"><a id="prevKoan" href="#">&larr; Previous Koan</a></li>
+  			<li class="next"><a id="nextKoan" href="#">Next Coan &rarr;</a></li>
+		</ul>
+	</div>
 }
 
 
