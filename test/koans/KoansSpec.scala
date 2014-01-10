@@ -2,13 +2,14 @@ package koans
 
 
 import org.specs2.mutable._
-
 import scala.io._
 import models.KoansParser
-
+import org.junit.runner._
+import org.specs2.runner.JUnitRunner
 /**
  * Test for Koan parser
  */
+@RunWith(classOf[JUnitRunner])
 class KoansSpec extends Specification {
 
   def resourceAsString(name: String): String = {
