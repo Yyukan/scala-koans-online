@@ -1,13 +1,21 @@
-
 body {
-  overflow: hidden;
+	overflow: hidden;
+}
+
+.meta {
+	display: none;
 }
 
 #editor {
-  margin: 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+	margin: 0;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#editor-container {
+	position: relative;
+	height: 500px;
 }

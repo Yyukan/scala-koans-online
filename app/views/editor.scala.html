@@ -1,0 +1,50 @@
+@* editor Template File *@
+@(koanId:Long, selectedSuite:KoanSuite, suites:Seq[models.KoanSuite])
+@import models.JsonFormats.suiteFormat
+
+@main("Scala Koans - Editor") {
+	<!-- header -->
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    	<ul class="nav navbar-nav">
+      		<li class="dropdown">
+       			<a id="selectedSuite" suiteId="@selectedSuite.id" href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
+        		<ul id="suites" class="dropdown-menu">
+        			@suites.map { suite =>
+       					@if(suite == selectedSuite) {
+	        				<li class="disabled" suiteId="@suite.id"><a href="#">@suite.name</a></li>
+   						} else {
+   							<li suiteId="@suite.id"><a href="#">@suite.name</a></li>
+   						}   			
+       				}
+        		</ul>
+      		</li>
+    	</ul>
+		<p class="navbar-text navbar-right">Signed in as SK</p>
+    </div>
+} {
+	<!-- body -->
+	<div class="meta">
+		<koan-id>@koanId</koan-id>
+		<suite>@play.api.libs.json.Json.toJson(selectedSuite)</suite>
+	</div>
+	<div id="editor-container">
+		<pre id="editor"></pre>
+	</div>
+    
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/editor.js")'></script>
+    <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("src-noconflict/ace.js"))'></script>
+} {
+	<!-- footer -->
+	<div class="pull-right">
+		<ul class="pager">
+  			<li class="previous"><a id="prevKoan" href="#">&larr; Previous Koan</a></li>
+  			<li class="next"><a id="nextKoan" href="#">Next Koan &rarr;</a></li>
+		</ul>
+	</div>
+}
+
+
+
+
+
+
