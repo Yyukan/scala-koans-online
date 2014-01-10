@@ -8,6 +8,7 @@ GET   /                controllers.Application.index
 # Editor
 GET   /editor          controllers.Application.editor
 GET   /koan            controllers.Application.koan(id: Long)
+GET   /suite           controllers.Application.suite(id: Long)
 
 # Parse Koans
 GET   /koans           controllers.Application.koans

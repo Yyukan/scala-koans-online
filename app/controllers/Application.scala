@@ -45,6 +45,17 @@ object Application extends Controller with MongoController {
     koan.map { k => Ok(Json.toJson(k.koan)) }
   }
 
+  def suite(id: Long) = Action.async {
+    import models.JsonFormats.suiteFormat
+    val suite = (koanActor ? KoanActor.GetKoanSuite(id)).mapTo[KoanActor.SuiteResult]
+    suite.map {
+      _.suite match {
+        case Some(suite) => Ok(Json.toJson(suite))
+        case None => NotFound
+      }
+    }
+  }
+
   def koans = Action.async {
     import models.JsonFormats.koanFormat
 

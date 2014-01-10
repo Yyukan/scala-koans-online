@@ -1,4 +1,6 @@
 var editor
+var selector
+
 $(function() {
 	editor = ace.edit("editor");
 	editor.setTheme("ace/theme/eclipse");
@@ -6,35 +8,39 @@ $(function() {
 
 	var currentKoanId = $("koan-id").text()
 	selectKoan(currentKoanId)
-	$("#prevKoan").parent().addClass("disabled")
 
-	var suite = JSON.parse($("suite").text())
-	console.log(suite)
+	selector = new Selector()
+	selector.current(parseInt(currentKoanId))
 
-	var selector = new Selector(parseInt(currentKoanId))
+	updatePrevAndNext()
 
 	$("#nextKoan").click(function() {
-		$("#prevKoan").parent().removeClass("disabled")
 		selectKoan(selector.next())
-		if (!selector.hasNext()) {
-			$(this).parent().addClass("disabled")			
-		}
+		updatePrevAndNext()
 	})
 	$("#prevKoan").click(function() {
-		$("#nextKoan").parent().removeClass("disabled")
 		selectKoan(selector.prev())
-		if (!selector.hasPrev()) {
-			$(this).parent().addClass("disabled")			
+		updatePrevAndNext()
+	})
+
+	$("#suites").children().click(function() {
+		var li = $(this)
+		if (!li.hasClass("disabled")) {
+			selectSuite(li)
 		}
 	})
 })
 
-function Selector(curId) {
-	this.ids = JSON.parse($("suite").text()).ids
-	this.index = this.ids.indexOf(curId)
+function Selector() {
+	this.ids = JSON.parse($("suite").text()).koanIds
+	this.index = 0
 
-	this.current = function() {
-		return this.ids[this.index]
+	this.current = function(id) {
+		if (id) {
+			this.index = this.ids.indexOf(id)
+		} else {
+			return this.ids[this.index]
+		}
 	}
 
 	this.next = function() {
@@ -66,6 +72,38 @@ function selectKoan(id) {
 		success : function(data) {
 			editor.setValue(data.content)
 			editor.gotoLine(0);
+		},
+		dataType : "json"
+	});
+}
+
+function updatePrevAndNext() {
+	var next = $("#nextKoan").parent()
+	var prev = $("#prevKoan").parent()
+	next.removeClass("disabled")
+	prev.removeClass("disabled")
+	if (!selector.hasNext()) {
+		next.addClass("disabled")
+	}
+	if (!selector.hasPrev()) {
+		prev.addClass("disabled")
+	}
+}
+
+function selectSuite(suite) {
+	var suiteId = suite.attr("suiteId")
+	$("#selectedSuite").attr("suiteId", suiteId)
+	$("#selectedSuite").text(suite.children("a").text())
+	$("#suites").children().removeClass("disabled")
+	$("#suites").children("li[suiteId=" + suiteId + "]").addClass("disabled")
+	$.ajax({
+		url : "suite?id=" + suiteId,
+		success : function(suite) {
+			selector.ids = suite.koanIds
+			// TODO if no koans?
+			selector.current(suite.koanIds[0])
+			selectKoan(suite.koanIds[0])
+			updatePrevAndNext()
 		},
 		dataType : "json"
 	});

@@ -1,18 +1,19 @@
 @* editor Template File *@
 @(koanId:Long, selectedSuite:KoanSuite, suites:Seq[models.KoanSuite])
+@import models.JsonFormats.suiteFormat
 
 @main("Scala Koans - Editor") {
 	<!-- header -->
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     	<ul class="nav navbar-nav">
       		<li class="dropdown">
-       			<a href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
-        		<ul class="dropdown-menu">
+       			<a id="selectedSuite" suiteId="@selectedSuite.id" href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
+        		<ul id="suites" class="dropdown-menu">
         			@suites.map { suite =>
        					@if(suite == selectedSuite) {
-	        				<li class="disabled"><a href="#">@suite.name</a></li>
+	        				<li class="disabled" suiteId="@suite.id"><a href="#">@suite.name</a></li>
    						} else {
-   							<li><a href="#">@suite.name</a></li>
+   							<li suiteId="@suite.id"><a href="#">@suite.name</a></li>
    						}   			
        				}
         		</ul>
@@ -24,7 +25,7 @@
 	<!-- body -->
 	<div class="meta">
 		<koan-id>@koanId</koan-id>
-		<suite>{"ids":[@selectedSuite.koanIds.mkString(",")]}</suite>
+		<suite>@play.api.libs.json.Json.toJson(selectedSuite)</suite>
 	</div>
 	<div id="editor-container">
 		<pre id="editor"></pre>
@@ -37,7 +38,7 @@
 	<div class="pull-right">
 		<ul class="pager">
   			<li class="previous"><a id="prevKoan" href="#">&larr; Previous Koan</a></li>
-  			<li class="next"><a id="nextKoan" href="#">Next Coan &rarr;</a></li>
+  			<li class="next"><a id="nextKoan" href="#">Next Koan &rarr;</a></li>
 		</ul>
 	</div>
 }
