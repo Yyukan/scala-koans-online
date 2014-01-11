@@ -19,7 +19,11 @@
         		</ul>
       		</li>
     	</ul>
-		<p class="navbar-text navbar-right">Signed in as SK</p>
+    	<ul class="nav navbar-nav">
+  			<li class="previous"><a id="prevKoan" href="#">&larr; Previous Koan</a></li>
+  			<li class="next"><a id="nextKoan" href="#">Next Koan &rarr;</a></li>
+		</ul>
+		<p class="navbar-text navbar-right">Signed in as SK&nbsp;&nbsp;</p>
     </div>
 } {
 	<!-- body -->
@@ -35,12 +39,7 @@
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("src-noconflict/ace.js"))'></script>
 } {
 	<!-- footer -->
-	<div class="pull-right">
-		<ul class="pager">
-  			<li class="previous"><a id="prevKoan" href="#">&larr; Previous Koan</a></li>
-  			<li class="next"><a id="nextKoan" href="#">Next Koan &rarr;</a></li>
-		</ul>
-	</div>
+	<button type="button" class="btn btn-primary navbar-btn pull-right">Compile</button>	
 }
 
 
