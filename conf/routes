@@ -3,17 +3,18 @@
 # ~~~~
 
 # Home page
-GET   /                controllers.Application.index
+GET    /                controllers.Application.index
 
 # Editor
-GET   /editor          controllers.Application.editor
-GET   /koan            controllers.Application.koan(id: Long)
-GET   /suite           controllers.Application.suite(id: Long)
+GET    /editor          controllers.Application.editor
+GET    /koan            controllers.Application.koan(id: Long)
+GET    /suite           controllers.Application.suite(id: Long)
+POST   /compile         controllers.Application.compile
 
 # Parse Koans
-GET   /koans           controllers.Application.koans
-GET   /koansAll        controllers.Application.koansAll
+GET    /koans           controllers.Application.koans
+GET    /koansAll        controllers.Application.koansAll
 
 # Map static resources from the /public folder to the /assets URL path
-GET   /assets/*file    controllers.Assets.at(path="/public", file)
-GET   /webjars/*file   controllers.WebJarAssets.at(file)
+GET    /assets/*file    controllers.Assets.at(path="/public", file)
+GET    /webjars/*file   controllers.WebJarAssets.at(file)

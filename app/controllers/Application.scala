@@ -18,14 +18,17 @@ import akka.pattern.{ ask, pipe }
 import akka.util.Timeout
 import scala.concurrent.duration._
 import models.KoanSuite
+import actors.CompileActor
 
 object Application extends Controller with MongoController {
 
-  def collection: JSONCollection = db.collection[JSONCollection]("koans")
+  private def collection: JSONCollection = db.collection[JSONCollection]("koans")
 
-  val system = ActorSystem("ScalaKoansSystem")
-  implicit val timeout = Timeout(5 seconds) // needed for `?` below
-  val koanActor: ActorRef = system.actorOf(Props[KoanActor], "KoanActor")
+  private val system = ActorSystem("ScalaKoansSystem")
+  private implicit val timeout = Timeout(5 seconds) // needed for `?` below
+
+  private val koanActor: ActorRef = system.actorOf(Props[KoanActor], "KoanActor")
+  private val compileActor: ActorRef = system.actorOf(Props[CompileActor], "CompileActor")
 
   def index = Action {
     Ok(views.html.index())
@@ -36,6 +39,21 @@ object Application extends Controller with MongoController {
     suites.map { s =>
       val suite = s.suites.head
       Ok(views.html.editor(suite.koanIds.head, suite, s.suites))
+    }
+  }
+
+  def compile = Action.async(parse.json) { request =>
+
+    import actors.CompileActor.compileResultFormat
+    import actors.CompileActor.compileFormat
+
+    request.body.validate[CompileActor.Compile].map {
+      case compile: CompileActor.Compile => {
+        val result = (compileActor ? compile).mapTo[CompileActor.CompileResult]
+        result.map { r => Ok(Json.toJson(r)) }
+      }
+    }.recoverTotal {
+      e => Future.successful(BadRequest("Detected error:" + JsError.toFlatJson(e)))
     }
   }
 

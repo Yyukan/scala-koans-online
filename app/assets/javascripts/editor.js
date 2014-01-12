@@ -2,6 +2,10 @@ var editor
 var selector
 
 $(function() {
+	$.ajaxSetup({
+		contentType : "application/json"
+	})
+	
 	editor = ace.edit("editor");
 	editor.setTheme("ace/theme/eclipse");
 	editor.getSession().setMode("ace/mode/scala");
@@ -28,6 +32,10 @@ $(function() {
 		if (!li.hasClass("disabled")) {
 			selectSuite(li)
 		}
+	})
+
+	$("#compile").click(function() {
+		compile()
 	})
 })
 
@@ -104,6 +112,22 @@ function selectSuite(suite) {
 			selector.current(suite.koanIds[0])
 			selectKoan(suite.koanIds[0])
 			updatePrevAndNext()
+		},
+		dataType : "json"
+	});
+}
+
+function compile() {
+	var koan = editor.getValue()
+	$.ajax({
+		type : "POST",
+		url : "compile",
+		data : JSON.stringify({
+			koanId : selector.current(),
+			koan : koan
+		}),
+		success : function(result) {
+			console.log(result)
 		},
 		dataType : "json"
 	});
