@@ -22,7 +22,7 @@ import support.KoanSuite
 class AboutAsserts extends KoanSuite with ShouldMatchers {
 
   koan("asserts can take a boolean argument") {
-    assert(false) // should be true
+    assert(true) // should be true
   }
 
   koan("asserts can include a message") {
@@ -98,7 +98,8 @@ class AboutAsserts extends KoanSuite with ShouldMatchers {
         ClassPath.join(
           scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/scala-library.jar",
           scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/scalatest_2.10-2.0.jar" )
-
+      settings.sourcepath.value +=
+        scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/src"
 
       val in = new IMain(settings){
         override protected def parentClassLoader = settings.getClass.getClassLoader()
@@ -110,7 +111,7 @@ class AboutAsserts extends KoanSuite with ShouldMatchers {
 
       val output = in.interpret("(new AboutAsserts).execute()")
       println("Execution result " + output)
-      source.length === 742
+      source.length === 741
 
       output shouldEqual Results.Success
     }
