@@ -3,7 +3,6 @@ package koans
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
-import scala.tools.nsc.interpreter.IMain
 import java.io.File
 import scala.tools.nsc._
 import scala.tools.nsc.interpreter._
