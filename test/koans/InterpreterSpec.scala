@@ -5,7 +5,9 @@ import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import scala.tools.nsc.interpreter.IMain
 import java.io.File
-
+import scala.tools.nsc._
+import scala.tools.nsc.interpreter._
+import scala.tools.nsc.util.ClassPath
 
 /**
  * Test for Koan Interpreter
@@ -62,13 +64,9 @@ class AboutAsserts extends KoanSuite with ShouldMatchers {
 
     """
   
-
   "Koan Interpreter" should {
 
     "test interpret simple expression and scalatest" in {
-      import scala.tools.nsc._
-      import scala.tools.nsc.util.ClassPath
-
 
       val settings = new Settings
       settings.bootclasspath.value +=
@@ -88,8 +86,33 @@ class AboutAsserts extends KoanSuite with ShouldMatchers {
       }
 
       val output = in.interpret("(new SetSpec).execute()")
-      println("Output" + output)
+      println("Execution result " + output)
+
+      output shouldEqual Results.Success
+    }
+
+    "test interpret and execute koan" in {
+
+      val settings = new Settings
+      settings.bootclasspath.value +=
+        ClassPath.join(
+          scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/scala-library.jar",
+          scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/scalatest_2.10-2.0.jar" )
+
+
+      val in = new IMain(settings){
+        override protected def parentClassLoader = settings.getClass.getClassLoader()
+      }
+
+      in.interpret(source) match {
+        case x  => println(x)
+      }
+
+      val output = in.interpret("(new AboutAsserts).execute()")
+      println("Execution result " + output)
       source.length === 742
+
+      output shouldEqual Results.Success
     }
 
   }
