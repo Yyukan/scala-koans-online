@@ -13,21 +13,18 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 import akka.actor.ActorSystem
 import akka.actor.ActorRef
 import akka.actor.Props
-import actors.KoanActor
 import akka.pattern.{ ask, pipe }
 import akka.util.Timeout
 import scala.concurrent.duration._
 import models.KoanSuite
 import actors.CompileActor
 import scala.collection.Map
-import actors.KoanActor.SuitesResult
 
 object Application extends Controller with MongoController {
 
   private val system = ActorSystem("ScalaKoansSystem")
   private implicit val timeout = Timeout(5 seconds) // needed for `?` below
 
-  private val koanActor: ActorRef = system.actorOf(Props[KoanActor], "KoanActor")
   private val compileActor: ActorRef = system.actorOf(Props[CompileActor], "CompileActor")
 
   def index = Action {
@@ -47,23 +44,6 @@ object Application extends Controller with MongoController {
       }
     }.recoverTotal {
       e => Future.successful(BadRequest("Detected error:" + JsError.toFlatJson(e)))
-    }
-  }
-
-  def koan(id: Long) = Action.async {
-    import models.JsonFormats.koanFormat
-    val koan = (koanActor ? KoanActor.GetKoan(id)).mapTo[KoanActor.KoanResult]
-    koan.map { k => Ok(Json.toJson(k.koan)) }
-  }
-
-  def suite(id: Long) = Action.async {
-    import models.JsonFormats.suiteFormat
-    val suite = (koanActor ? KoanActor.GetKoanSuite(id)).mapTo[KoanActor.SuiteResult]
-    suite.map {
-      _.suite match {
-        case Some(suite) => Ok(Json.toJson(suite))
-        case None => NotFound
-      }
     }
   }
 

@@ -12,6 +12,7 @@ POST   /compile         controllers.Application.compile
 GET    /editor                 controllers.KoansController.editor
 GET    /koans/parse            controllers.KoansController.koansParse
 GET    /koans/list             controllers.KoansController.koansList
+GET    /koans/:suite           controllers.KoansController.koans(suite: String)
 GET    /koans/:suite/:order    controllers.KoansController.koan(suite: String, order:Long)
 
 # Map static resources from the /public folder to the /assets URL path

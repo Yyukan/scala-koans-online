@@ -41,7 +41,8 @@ $(function() {
 })
 
 function Selector() {
-	this.ids = JSON.parse($("suite").text()).koanIds
+    // TODO:oshtykhno implement next/prev functionality
+	this.ids = null
 	this.index = 0
 
 	this.current = function(id) {
