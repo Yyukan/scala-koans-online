@@ -7,13 +7,13 @@
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     	<ul class="nav navbar-nav">
       		<li class="dropdown">
-       			<a id="selectedSuite" suiteId="@selectedSuite.id" href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
+       			<a id="selectedSuite" suiteId="@selectedSuite.name" href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
         		<ul id="suites" class="dropdown-menu">
         			@suites.map { suite =>
        					@if(suite == selectedSuite) {
-	        				<li class="disabled" suiteId="@suite.id"><a href="#">@suite.name</a></li>
+	        				<li class="disabled" suiteId="@suite.name"><a href="#">@suite.name</a></li>
    						} else {
-   							<li suiteId="@suite.id"><a href="#">@suite.name</a></li>
+   							<li suiteId="@suite.name"><a href="#">@suite.name</a></li>
    						}   			
        				}
         		</ul>

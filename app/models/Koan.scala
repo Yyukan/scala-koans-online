@@ -3,12 +3,12 @@ package models
 /**
  * Represents Koan
  */
-case class Koan(description: String, content: String)
+case class Koan(description: String, content: String, suite: String, order: Long = 0L)
 
 /**
  * Represents Koan Suite
  */
-case class KoanSuite(id: Long, name: String, koanIds: Seq[Long])
+case class KoanSuite(name: String)
 
 object JsonFormats {
   import play.api.libs.json.Json

@@ -25,19 +25,11 @@ class KoanActor extends Actor {
 
   import KoanActor._
 
-  val suites = Map(0l -> KoanSuite(0, "TestSuite1", List(1, 2)),
-    1l -> KoanSuite(1, "TestSuite2", List(3, 4)))
-
   override def receive = {
-    case ListAllSuites => sender ! SuitesResult(suites.values.toSeq)
-    case GetKoan(id) => sender ! KoanResult(getKoan(id))
-    case GetKoanSuite(id) => sender ! SuiteResult(suites.get(id))
-    case _ =>
+//    case ListAllSuites => sender ! SuitesResult(suites.values.toSeq)
+//    case GetKoan(id) => sender ! KoanResult(getKoan(id))
+//    case GetKoanSuite(id) => sender ! SuiteResult(suites.get(id))
+    case x => println(x)
   }
 
-  private def getKoan(id: Long) =
-    Koan("Test Description 1", s"""
-koan("some koan ${id}") { 
-    println("id=${id}") 
-}""")
 }

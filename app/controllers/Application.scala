@@ -38,7 +38,7 @@ object Application extends Controller with MongoController {
     val suites = (koanActor ? KoanActor.ListAllSuites).mapTo[KoanActor.SuitesResult]
     suites.map { s =>
       val suite = s.suites.head
-      Ok(views.html.editor(suite.koanIds.head, suite, s.suites))
+      Ok(views.html.editor(0, suite, s.suites))
     }
   }
 
@@ -74,19 +74,19 @@ object Application extends Controller with MongoController {
     }
   }
 
-  def koans = Action.async {
+  def koansParse = Action.async {
     import models.JsonFormats.koanFormat
 
     Logger.info("Collections is " + collection)
 
-    val user = Koan("first koan", "{first code}")
+    val user = Koan("first koan", "{first code}", "", 0)
     val futureResult = collection.insert(user)
 
     // when the insert is performed, send a OK 200 result
     futureResult.map(lastError => Ok(views.html.koans("Mongo LastError: %s".format(lastError))))
   }
 
-  def koansAll = Action.async {
+  def koansList = Action.async {
     import models.JsonFormats.koanFormat
 
     val cursor: Cursor[Koan] = collection.find(Json.obj()).cursor[Koan]

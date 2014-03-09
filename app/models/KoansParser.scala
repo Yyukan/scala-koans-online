@@ -1,6 +1,16 @@
 package models
 
 import scala.collection._
+import scala.sys.process._
+import java.net.URL
+import java.io.File
+import scala.Predef._
+import scala.collection.Map
+import scala._
+import scala.collection.Seq
+import scala.collection.JavaConverters._
+import java.security.MessageDigest
+
 
 /**
  * Parser for Koan
@@ -47,12 +57,54 @@ object KoansParser {
   /**
    * Finds all koans in source code
    *
+   * @param suite - suite name as string
    * @param source - code as string
    * @return - sequence of koans
    */
-  def parse(source: String):Seq[Koan] = {
-    koanPattern.findAllMatchIn(source).map(koan => {
-      Koan(description = koan.group(1), content = block(source.substring(koan.start, source.length - 1)))
+  def parse(suite: String, source: String):Seq[Koan] = {
+    koanPattern.findAllMatchIn(source).zipWithIndex.map( koan => {
+      Koan(suite = suite, description = koan._1.group(1), content = block(source.substring(koan._1.start, source.length - 1)))
     }).toSeq
   }
+
+  /**
+   * Loads koans
+   */
+  def load():Map[KoanSuite, Seq[Koan]] = {
+
+    def md5(s: String) = {
+      MessageDigest.getInstance("MD5").digest(s.getBytes)
+    }
+
+    /**
+     * Returns Map (koan class name -> koan class content)
+     *
+     * @param zipFileName - zip archive file path with koans
+     */
+    def sources(zipFileName: String):Map[String, String] = {
+      val zip = new java.util.zip.ZipFile(zipFileName)
+      val entries = zip.entries.asScala
+
+      val sources = entries.filter(entry => entry.getName.contains("/src/test/scala/org/functionalkoans/forscala/"))
+
+      sources.flatMap{ entry =>
+        Map(entry.getName -> scala.io.Source.fromInputStream(zip.getInputStream(entry)).getLines().mkString("\n"))
+      }.toMap
+    }
+
+    val zipFileName = "/tmp/koans.zip"
+    val file = new File(zipFileName)
+
+    if (!file.exists()) {
+      (new URL("https://bitbucket.org/dmarsh/scalakoansexercises/get/tip.zip") #> new File(zipFileName)).!!
+    }
+
+    sources(zipFileName).map {
+      case (key, value) => {
+        val suite = KoanSuite(name = key)
+        suite -> parse(suite.name, value)
+      }
+    }
+  }
+
 }
