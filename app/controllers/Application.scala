@@ -19,10 +19,12 @@ import akka.util.Timeout
 import scala.concurrent.duration._
 import models.KoanSuite
 import actors.CompileActor
+import scala.collection.Map
 
 object Application extends Controller with MongoController {
 
-  private def collection: JSONCollection = db.collection[JSONCollection]("koans")
+  private def koansCollection: JSONCollection = db.collection[JSONCollection]("koans")
+  private def suiteCollection: JSONCollection = db.collection[JSONCollection]("suite")
 
   private val system = ActorSystem("ScalaKoansSystem")
   private implicit val timeout = Timeout(5 seconds) // needed for `?` below
@@ -74,22 +76,42 @@ object Application extends Controller with MongoController {
     }
   }
 
-  def koansParse = Action.async {
+  /**
+   * Administration action, removes current koan collections
+   * and than loads and update
+   */
+  def koansParse = Action {
     import models.JsonFormats.koanFormat
+    import models.JsonFormats.suiteFormat
 
-    Logger.info("Collections is " + collection)
+    Logger.info("Loading and parsing koans")
 
-    val user = Koan("first koan", "{first code}", "", 0)
-    val futureResult = collection.insert(user)
+    koansCollection.drop()
+    suiteCollection.drop()
+    Logger.info("Dropped collections [suite, koans]...")
 
-    // when the insert is performed, send a OK 200 result
-    futureResult.map(lastError => Ok(views.html.koans("Mongo LastError: %s".format(lastError))))
+    val suites: Map[KoanSuite, Seq[Koan]] = KoansParser.load()
+    Logger.info(s"Loaded ${suites.size} suites")
+
+    // filter suites with koans and update collections
+    suites.filter(p => p._2.size != 0).foreach {
+      case (suite, koans) => {
+        suiteCollection.insert(suite)
+        koans.foreach { koan =>
+          koansCollection.insert(koan)
+        }
+        Logger.info(s"Inserted suite ${suite.name} koans ${koans.size}")
+      }
+    }
+    Logger.info(s"Loaded ${suites.values.toList.size} koans, finished...")
+
+    Ok(s"Loaded ${suites.values.toList.size} koans, finished...")
   }
 
   def koansList = Action.async {
     import models.JsonFormats.koanFormat
 
-    val cursor: Cursor[Koan] = collection.find(Json.obj()).cursor[Koan]
+    val cursor: Cursor[Koan] = koansCollection.find(Json.obj()).cursor[Koan]
 
     val result: Future[List[Koan]] = cursor.collect[List]()
 

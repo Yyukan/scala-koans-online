@@ -9,7 +9,7 @@ import scala.collection.Map
 import scala._
 import scala.collection.Seq
 import scala.collection.JavaConverters._
-import java.security.MessageDigest
+import java.util.zip.ZipEntry
 
 
 /**
@@ -72,12 +72,8 @@ object KoansParser {
    */
   def load():Map[KoanSuite, Seq[Koan]] = {
 
-    def md5(s: String) = {
-      MessageDigest.getInstance("MD5").digest(s.getBytes)
-    }
-
     /**
-     * Returns Map (koan class name -> koan class content)
+     * Returns Map (koan full file name -> koan class content)
      *
      * @param zipFileName - zip archive file path with koans
      */
@@ -87,9 +83,19 @@ object KoansParser {
 
       val sources = entries.filter(entry => entry.getName.contains("/src/test/scala/org/functionalkoans/forscala/"))
 
-      sources.flatMap{ entry =>
+      sources.flatMap{ (entry: ZipEntry) =>
         Map(entry.getName -> scala.io.Source.fromInputStream(zip.getInputStream(entry)).getLines().mkString("\n"))
       }.toMap
+    }
+
+    /**
+     * Parses suite name
+     *
+     * @param path - like /scala/org/functionalkoans/forscala/AboutSequencesAndArrays.scala
+     * @return suite name, for example AboutSequencesAndArrays
+     */
+    def parseSuiteName(path: String): String = {
+      new File(path).getName.dropRight(7)
     }
 
     val zipFileName = "/tmp/koans.zip"
@@ -101,7 +107,7 @@ object KoansParser {
 
     sources(zipFileName).map {
       case (key, value) => {
-        val suite = KoanSuite(name = key)
+        val suite = KoanSuite(name = parseSuiteName(key))
         suite -> parse(suite.name, value)
       }
     }
