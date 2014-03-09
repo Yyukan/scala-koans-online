@@ -46,33 +46,33 @@ function Selector() {
 	this.index = 0
 
 	this.current = function(id) {
-		if (id) {
-			this.index = this.ids.indexOf(id)
-		} else {
-			return this.ids[this.index]
-		}
+//		if (id) {
+//			this.index = this.ids.indexOf(id)
+//		} else {
+//			return this.ids[this.index]
+//		}
 	}
 
 	this.next = function() {
-		if (this.hasNext()) {
-			this.index += 1
-		}
-		return this.current()
+//		if (this.hasNext()) {
+//			this.index += 1
+//		}
+//		return this.current()
 	}
 
 	this.hasNext = function() {
-		return this.ids.length > this.index + 1
+		//return this.ids.length > this.index + 1
 	}
 
 	this.prev = function() {
-		if (this.hasPrev()) {
-			this.index -= 1
-		}
-		return this.current()
+//		if (this.hasPrev()) {
+//			this.index -= 1
+//		}
+//		return this.current()
 	}
 
 	this.hasPrev = function() {
-		return 0 <= this.index - 1
+//		return 0 <= this.index - 1
 	}
 }
 
@@ -123,9 +123,8 @@ function compile() {
 	var koan = editor.getValue()
 	$.ajax({
 		type : "POST",
-		url : "compile",
+		url : "koans/compile",
 		data : JSON.stringify({
-			koanId : selector.current(),
 			koan : koan
 		}),
 		success : function(result) {

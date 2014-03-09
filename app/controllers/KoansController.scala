@@ -2,18 +2,21 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.{ KoansParser, Koan }
+import models.{KoansInterpreter, KoansParser, Koan, KoanSuite}
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json._
 import reactivemongo.api._
 import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
-import models.KoanSuite
 import scala.collection.Map
 import models.JsonFormats.koanFormat
 import models.JsonFormats.suiteFormat
 
+
+/**
+ * Controller which is responsible for koans manipulations
+ */
 object KoansController extends Controller with MongoController {
   private def koansCollection: JSONCollection = db.collection[JSONCollection]("koans")
   private def suiteCollection: JSONCollection = db.collection[JSONCollection]("suite")
@@ -115,6 +118,19 @@ object KoansController extends Controller with MongoController {
         "content" -> s"""koan(\"${koan.description}\") ${koan.content}"""
       ))
     }
+  }
+
+  /**
+   * Compiles and executes koan
+   */
+  def compile = Action(parse.json) { request =>
+    val json: JsValue = request.body
+    val koan:String = (json \ "koan").as[String]
+
+    Logger.info(s"Koan to execute $koan")
+
+    new KoansInterpreter().execute(koan)
+    Ok("Ok")
   }
 
 }

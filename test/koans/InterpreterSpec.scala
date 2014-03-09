@@ -101,7 +101,7 @@ class AboutAsserts extends KoanSuite with ShouldMatchers {
         scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/src"
 
       val in = new IMain(settings){
-        override protected def parentClassLoader = settings.getClass.getClassLoader()
+        override protected def parentClassLoader = settings.getClass.getClassLoader
       }
 
       in.interpret(source) match {
