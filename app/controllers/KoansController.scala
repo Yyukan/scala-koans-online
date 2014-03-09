@@ -129,7 +129,7 @@ object KoansController extends Controller with MongoController {
 
     Logger.info(s"Koan to execute $koan")
 
-    new KoansInterpreter().execute(koan)
+    KoansInterpreter.execute(koan)
     Ok("Ok")
   }
 

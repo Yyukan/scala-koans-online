@@ -8,7 +8,7 @@ import scala.tools.nsc.util.ClassPath
 /**
  * Compiles and execute koan
  */
-class KoansInterpreter() {
+object KoansInterpreter {
 
   val settings = new Settings
   settings.bootclasspath.value +=
