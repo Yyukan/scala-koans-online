@@ -11,6 +11,9 @@ import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
 import models.KoanSuite
 import scala.collection.Map
+import actors.KoanActor.SuitesResult
+import actors.KoanActor
+import reactivemongo.bson.BSONDocument
 
 object KoansController extends Controller with MongoController {
   private def koansCollection: JSONCollection = db.collection[JSONCollection]("koans")
@@ -59,5 +62,36 @@ object KoansController extends Controller with MongoController {
       Ok(result.toString)
     }
   }
+
+  def editor = Action.async {
+    import models.JsonFormats.suiteFormat
+
+    val cursor: Cursor[KoanSuite] = suiteCollection.find(Json.obj()).cursor[KoanSuite]
+
+    val result: Future[List[KoanSuite]] = cursor.collect[List]()
+
+    result.map { list =>
+      Logger.info(s"Found ${list.size} suites")
+        Ok(views.html.editor(0, list.head, list))
+    }
+  }
+
+  def koan(suite:String, order: Long) = Action.async {
+    import models.JsonFormats.koanFormat
+
+    val filter = Json.obj(
+      "suite" -> suite,
+      "order" -> order)
+
+    val cursor: Cursor[Koan] = koansCollection.find(filter).cursor[Koan]
+
+    val result: Future[List[Koan]] = cursor.collect[List]()
+
+    result.map { list =>
+      Ok(Json.toJson(list.head))
+    }
+  }
+
+
 
 }

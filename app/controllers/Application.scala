@@ -20,11 +20,9 @@ import scala.concurrent.duration._
 import models.KoanSuite
 import actors.CompileActor
 import scala.collection.Map
+import actors.KoanActor.SuitesResult
 
 object Application extends Controller with MongoController {
-
-  private def koansCollection: JSONCollection = db.collection[JSONCollection]("koans")
-  private def suiteCollection: JSONCollection = db.collection[JSONCollection]("suite")
 
   private val system = ActorSystem("ScalaKoansSystem")
   private implicit val timeout = Timeout(5 seconds) // needed for `?` below
@@ -36,13 +34,6 @@ object Application extends Controller with MongoController {
     Ok(views.html.index())
   }
 
-  def editor = Action.async {
-    val suites = (koanActor ? KoanActor.ListAllSuites).mapTo[KoanActor.SuitesResult]
-    suites.map { s =>
-      val suite = s.suites.head
-      Ok(views.html.editor(0, suite, s.suites))
-    }
-  }
 
   def compile = Action.async(parse.json) { request =>
 

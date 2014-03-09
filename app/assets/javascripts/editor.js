@@ -10,11 +10,12 @@ $(function() {
 	editor.setTheme("ace/theme/eclipse");
 	editor.getSession().setMode("ace/mode/scala");
 
-	var currentKoanId = $("koan-id").text()
-	selectKoan(currentKoanId)
+	var currentKoan  = $("koan-id").text()
+	var currentSuite = $("suite").text()
+	selectKoan(currentSuite, currentKoan)
 
 	selector = new Selector()
-	selector.current(parseInt(currentKoanId))
+	selector.current(parseInt(currentKoan))
 
 	updatePrevAndNext()
 
@@ -74,9 +75,9 @@ function Selector() {
 	}
 }
 
-function selectKoan(id) {
+function selectKoan(suite, koan) {
 	$.ajax({
-		url : "koan?id=" + id,
+		url : "koans/" + suite + "/" + koan,
 		success : function(data) {
 			editor.setValue(data.content)
 			editor.gotoLine(0);

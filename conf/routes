@@ -6,14 +6,13 @@
 GET    /                controllers.Application.index
 
 # Editor
-GET    /editor          controllers.Application.editor
-GET    /koan            controllers.Application.koan(id: Long)
-GET    /suite           controllers.Application.suite(id: Long)
 POST   /compile         controllers.Application.compile
 
-# Parse Koans
-GET    /koans/parse     controllers.KoansController.koansParse
-GET    /koans/list      controllers.KoansController.koansList
+# Koans manipulations
+GET    /editor                 controllers.KoansController.editor
+GET    /koans/parse            controllers.KoansController.koansParse
+GET    /koans/list             controllers.KoansController.koansList
+GET    /koans/:suite/:order    controllers.KoansController.koan(suite: String, order:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET    /assets/*file    controllers.Assets.at(path="/public", file)

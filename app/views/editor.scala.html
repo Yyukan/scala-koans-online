@@ -19,27 +19,32 @@
         		</ul>
       		</li>
     	</ul>
+        <!--
     	<ul class="nav navbar-nav">
   			<li class="previous"><a id="prevKoan" href="#">&larr; Previous Koan</a></li>
   			<li class="next"><a id="nextKoan" href="#">Next Koan &rarr;</a></li>
-		</ul>
+		</ul>-->
 		<p class="navbar-text navbar-right">Signed in as SK&nbsp;&nbsp;</p>
     </div>
 } {
 	<!-- body -->
 	<div class="meta">
 		<koan-id>@koanId</koan-id>
-		<suite>@play.api.libs.json.Json.toJson(selectedSuite)</suite>
+		<suite>@selectedSuite.name</suite>
 	</div>
+    <div id="editor-header">
+        <button type="button" class="btn btn-primary navbar-btn">Previous koan</button>
+        <button type="button" class="btn btn-primary navbar-btn">Next Koan</button>
+        <button type="button" class="btn btn-primary navbar-btn pull-right">Run</button>
+    </div>
 	<div id="editor-container">
-		<pre id="editor"></pre>
+        <pre id="editor"></pre>
 	</div>
-    
+
     <script type='text/javascript' src='@routes.Assets.at("javascripts/editor.js")'></script>
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("src-noconflict/ace.js"))'></script>
 } {
 	<!-- footer -->
-	<button type="button" id="compile" class="btn btn-primary navbar-btn pull-right">Compile</button>	
 }
 
 

@@ -63,7 +63,8 @@ object KoansParser {
    */
   def parse(suite: String, source: String):Seq[Koan] = {
     koanPattern.findAllMatchIn(source).zipWithIndex.map( koan => {
-      Koan(suite = suite, description = koan._1.group(1), content = block(source.substring(koan._1.start, source.length - 1)))
+      Koan(suite = suite, description = koan._1.group(1),
+        content = block(source.substring(koan._1.start, source.length - 1)), order = koan._2)
     }).toSeq
   }
 
