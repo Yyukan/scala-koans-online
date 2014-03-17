@@ -130,6 +130,9 @@ function compile() {
     success: function(result) {
       console.log(result)
     },
+    error: function (result) {
+      console.warn(result)
+    },
     dataType: "json"
   });
 }
