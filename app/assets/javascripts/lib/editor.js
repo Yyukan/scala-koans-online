@@ -6,6 +6,33 @@ $.ajaxSetup({
   contentType: "application/json"
 })
 
+// FIXME do it remote
+var suitesData = JSON.parse($('.meta > suites').text())
+
+var suites = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  // `states` is an array of state names defined in "The Basics"
+  local: $.map(suitesData, function(suite) {
+    return {
+      value: suite
+    };
+  })
+});
+
+// kicks off the loading/processing of `local` and `prefetch`
+suites.initialize();
+
+$('.typeahead').typeahead({
+  minLength: 1,
+  highlight: true,
+  hint: true
+}, {
+  name: 'suites',
+  displayKey: 'value',
+  source: suites.ttAdapter()
+});
+
 // set up ace
 editor = ace.edit("editor");
 editor.setTheme("ace/theme/eclipse");
@@ -130,7 +157,7 @@ function compile() {
     success: function(result) {
       console.log(result)
     },
-    error: function (result) {
+    error: function(result) {
       console.warn(result)
     },
     dataType: "json"

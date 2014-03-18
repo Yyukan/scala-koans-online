@@ -19,11 +19,12 @@
         		</ul>
       		</li>
     	</ul>
-        <!--
-    	<ul class="nav navbar-nav">
-  			<li class="previous"><a id="prevKoan" href="#">&larr; Previous Koan</a></li>
-  			<li class="next"><a id="nextKoan" href="#">Next Koan &rarr;</a></li>
-		</ul>-->
+       	<form class="navbar-form navbar-left" role="search">
+        	<div class="form-group">
+          		<input type="text" class="form-control typeahead" placeholder="Search Suites">
+        	</div>
+        	<button type="submit" class="btn btn-default">Submit</button>
+      	</form>
 		<p class="navbar-text navbar-right">Signed in as SK&nbsp;&nbsp;</p>
     </div>
 } {
@@ -31,6 +32,7 @@
 	<div class="meta">
 		<koan-id>@koanId</koan-id>
 		<suite>@selectedSuite.name</suite>
+		<suites>[@suites.map("\"" + _.name + "\"").mkString(",")]</suites>
 	</div>
     <div id="editor-header">
         <button type="button" id="prevKoan" class="btn btn-primary navbar-btn">Previous koan</button>
@@ -44,8 +46,8 @@
 	<!-- 
     <script type='text/javascript' src='@routes.Assets.at("javascripts/editor.js")'></script>
 	 -->
-    @helper.requireJs(core = routes.Assets.at("javascripts/require.js").url, module = routes.Assets.at("javascripts/main").url)
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("src-noconflict/ace.js"))'></script>
+    @helper.requireJs(core = routes.Assets.at("javascripts/require.js").url, module = routes.Assets.at("javascripts/main").url)
 } {
 	<!-- footer -->
 }
