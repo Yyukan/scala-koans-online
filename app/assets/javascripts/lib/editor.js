@@ -87,8 +87,8 @@ function selectKoan(suite, koan) {
 }
 
 function updatePrevAndNext() {
-  var next = $("#nextKoan").parent()
-  var prev = $("#prevKoan").parent()
+  var next = $("#nextKoan")
+  var prev = $("#prevKoan")
   next.removeClass("disabled")
   prev.removeClass("disabled")
   if (!selector.hasNext()) {
@@ -102,7 +102,7 @@ function updatePrevAndNext() {
 function selectSuite(suite) {
   var suiteId = suite.attr("suiteId")
   $("#selectedSuite").attr("suiteId", suiteId)
-  $("#selectedSuite").text(suite.children("a").text())
+  $("#selectedSuite").text(suiteId)
   $("#suites").children().removeClass("disabled")
   $("#suites").children("li[suiteId=" + suiteId + "]").addClass("disabled")
   $.ajax({
