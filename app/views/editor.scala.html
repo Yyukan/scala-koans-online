@@ -42,9 +42,6 @@
         <pre id="editor"></pre>
 	</div>
 
-	<!-- 
-    <script type='text/javascript' src='@routes.Assets.at("javascripts/editor.js")'></script>
-	 -->
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("src-noconflict/ace.js"))'></script>
     @helper.requireJs(core = routes.Assets.at("javascripts/require.js").url, module = routes.Assets.at("javascripts/main").url)
 } {
