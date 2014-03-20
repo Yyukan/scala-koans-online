@@ -12,12 +12,14 @@ var suitesData = JSON.parse($('.meta > suites').text())
 var suites = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-  // `states` is an array of state names defined in "The Basics"
-  local: $.map(suitesData, function(suite) {
-    return {
-      value: suite
-    };
-  })
+  prefetch: 'suites/list',
+  remote: 'suites/list/%QUERY'
+//  // `states` is an array of state names defined in "The Basics"
+//  local: $.map(suitesData, function(suite) {
+//    return {
+//      value: suite
+//    };
+//  })
 });
 
 // kicks off the loading/processing of `local` and `prefetch`
@@ -29,7 +31,7 @@ $('.typeahead').typeahead({
   hint: true
 }, {
   name: 'suites',
-  displayKey: 'value',
+  displayKey: 'name',
   source: suites.ttAdapter()
 });
 

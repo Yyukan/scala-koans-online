@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.{KoansInterpreter, KoansParser, Koan, KoanSuite}
+import models.{ KoansInterpreter, KoansParser, Koan, KoanSuite }
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json._
@@ -12,7 +12,7 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 import scala.collection.Map
 import models.JsonFormats.koanFormat
 import models.JsonFormats.suiteFormat
-
+import reactivemongo.bson.BSONDocument
 
 /**
  * Controller which is responsible for koans manipulations
@@ -53,6 +53,23 @@ object KoansController extends Controller with MongoController {
     Ok(s"Loaded ${suites.values.toList.size} koans, finished...")
   }
 
+  def suitesList = Action.async {
+    val cursor: Cursor[KoanSuite] = suiteCollection.find(Json.obj()).cursor[KoanSuite]
+    val result: Future[List[KoanSuite]] = cursor.collect[List]()
+    result.map { suite =>
+      Ok(Json.toJson(suite))
+    }
+  }
+
+  def suites(query: String) = Action.async {
+    val jsonQuery = Json.obj("name" -> Json.obj("$regex" -> s"$query.*", "$options" -> "i"))
+    val cursor: Cursor[KoanSuite] = suiteCollection.find(jsonQuery).cursor[KoanSuite]
+    val result: Future[List[KoanSuite]] = cursor.collect[List]()
+    result.map { suite =>
+      Ok(Json.toJson(suite))
+    }
+  }
+
   def koansList = Action.async {
     val cursor: Cursor[Koan] = koansCollection.find(Json.obj()).cursor[Koan]
 
@@ -89,14 +106,14 @@ object KoansController extends Controller with MongoController {
     val result: Future[List[Koan]] = cursor.collect[List]()
 
     result.map { list =>
-       Ok(Json.toJson(list.map(koan => koan.order)))
+      Ok(Json.toJson(list.map(koan => koan.order)))
     }
   }
 
   /**
    * Returns koan json for specified suite by specified order
    */
-  def koan(suite:String, order: Long) = Action.async {
+  def koan(suite: String, order: Long) = Action.async {
     import models.JsonFormats.koanFormat
 
     val filter = Json.obj(
@@ -115,8 +132,7 @@ object KoansController extends Controller with MongoController {
       Ok(Json.obj(
         "order" -> koan.order,
         "suite" -> koan.suite,
-        "content" -> s"""koan(\"${koan.description}\") ${koan.content}"""
-      ))
+        "content" -> s"""koan(\"${koan.description}\") ${koan.content}"""))
     }
   }
 
@@ -125,7 +141,7 @@ object KoansController extends Controller with MongoController {
    */
   def compile = Action(parse.json) { request =>
     val json: JsValue = request.body
-    val koan:String = (json \ "koan").as[String]
+    val koan: String = (json \ "koan").as[String]
 
     Logger.info(s"Koan to execute $koan")
 
