@@ -8,7 +8,7 @@
     	<ul class="nav navbar-nav">
       		<li class="dropdown">
        			<a id="selectedSuite" suiteId="@selectedSuite.name" href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
-        		<ul id="suites" class="dropdown-menu">
+        		<ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
         			@suites.map { suite =>
        					@if(suite == selectedSuite) {
 	        				<li class="disabled" suiteId="@suite.name"><a href="#">@suite.name</a></li>
@@ -19,20 +19,19 @@
         		</ul>
       		</li>
     	</ul>
-       	<form class="navbar-form navbar-left" role="search">
+		<p class="navbar-text navbar-right">Signed in as SK&nbsp;&nbsp;</p>
+       	<form id="suitesSearchForm" class="navbar-form navbar-right" role="search">
         	<div class="form-group">
           		<input type="text" class="form-control typeahead" placeholder="Search Suites">
         	</div>
         	<button type="submit" class="btn btn-default">Submit</button>
       	</form>
-		<p class="navbar-text navbar-right">Signed in as SK&nbsp;&nbsp;</p>
     </div>
 } {
 	<!-- body -->
 	<div class="meta">
 		<koan-id>@koanId</koan-id>
 		<suite>@selectedSuite.name</suite>
-		<suites>[@suites.map("\"" + _.name + "\"").mkString(",")]</suites>
 	</div>
     <div id="editor-header">
         <button type="button" id="prevKoan" class="btn btn-primary navbar-btn">Previous koan</button>

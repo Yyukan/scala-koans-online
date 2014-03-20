@@ -33,7 +33,16 @@ html {
 	min-height: 93%;
 }
 
-/* typeahead */
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+/* ==================================================== */
+/* =================== Typeahead ====================== */
+/* ==================================================== */
+
 .tt-dropdown-menu {
 	text-align: left;
 }
