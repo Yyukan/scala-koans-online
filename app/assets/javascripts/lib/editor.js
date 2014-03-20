@@ -1,11 +1,18 @@
-var editor
-var selector
-
 // set up json
 $.ajaxSetup({
   contentType: "application/json"
 })
 
+var editor
+var selector
+
+// set up ace
+editor = ace.edit("editor");
+editor.setTheme("ace/theme/eclipse");
+editor.getSession().setMode("ace/mode/scala");
+editor.setFontSize('14px')
+
+// typeahead
 var suites = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -26,10 +33,6 @@ $('.typeahead').typeahead({
   source: suites.ttAdapter()
 });
 
-// set up ace
-editor = ace.edit("editor");
-editor.setTheme("ace/theme/eclipse");
-editor.getSession().setMode("ace/mode/scala");
 
 $("#suitesSearchForm").submit(function(e) {
   e.preventDefault();
