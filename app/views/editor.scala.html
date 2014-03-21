@@ -24,13 +24,13 @@
             <div class="btn-group">
                 <ul class="pager">
                 <li class="dropdown">
-                    <a id="selectedSuite" suiteId="@selectedSuite.name" href="#" style="background-color:#B21522;color:#eeeeee" class="dropdown-toggle btn btn-default" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
+                    <a id="selectedSuite" suiteId="@selectedSuite.name" href="#" style="background-color:#C3CAA2;color:white" class="dropdown-toggle btn btn-default" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
                     <ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
                         @suites.map { suite =>
                         @if(suite == selectedSuite) {
                         <li class="disabled" suiteId="@suite.name"><a href="#">@suite.name</a></li>
                         } else {
-                        <li suiteId="@suite.name"><a style="background-color:#B21522;color:#eeeeee" href="#">@suite.name</a></li>
+                        <li suiteId="@suite.name"><a style="background-color:#C3CAA2;color:white" href="#">@suite.name</a></li>
                         }
                         }
                     </ul>
@@ -39,13 +39,13 @@
             </div>
             <div class="btn-group" style="margin-left: 30px">
                 <ul class="pager">
-                    <li class="previous"><a id="prevKoan" href="#" style="background-color:#B21522;color:#eeeeee">&larr; Previous Koan</a></li>
-                    <li class="next"><a id="nextKoan" style="background-color:#B21522;color:#eeeeee" href="#">Next Koan &rarr;</a></li>
+                    <li class="previous"><a id="prevKoan" href="#" style="background-color:#C3CAA2;color:white">&larr; Previous Koan</a></li>
+                    <li class="next"><a id="nextKoan" style="background-color:#C3CAA2;color:white" href="#">Next Koan &rarr;</a></li>
                 </ul>
             </div>
             <div class="btn-group" style="margin-left: 50px">
                 <ul class="pager">
-                    <li class="next"><a id="compile" style="background-color:#B21522;color:#eeeeee" href="#">Execute Koan</a></li>
+                    <li class="next"><a id="compile" style="background-color:#C3CAA2;color:white" href="#">Execute Koan</a></li>
                 </ul>
             </div>
 	    </div>
