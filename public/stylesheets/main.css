@@ -46,6 +46,8 @@ html {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+	overflow: auto;
+	cursor: default;
 }
 
 /* ==================================================== */

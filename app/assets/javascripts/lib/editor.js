@@ -38,6 +38,9 @@ $("[title]").tooltip()
 $('#console').click(function() {
   $(this).offcanvas('toggle')
 })
+$("#console").animate({
+  scrollTop: $("#console")[0].scrollHeight
+}, "slow");
 
 $("#suitesSearchForm").submit(function(e) {
   e.preventDefault();
