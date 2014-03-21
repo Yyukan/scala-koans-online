@@ -12,12 +12,23 @@ editor.setTheme("ace/theme/eclipse");
 editor.getSession().setMode("ace/mode/scala");
 editor.setFontSize('14px')
 
+var suitesData = $('li[suiteId]').map(function() {
+  var suite = $(this).attr('suiteId')
+  return suite
+}).toArray()
+
 // typeahead
 var suites = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
+  // TODO remote is not really needed
   prefetch: 'suites/list',
   remote: 'suites/list/%QUERY'
+// local: $.map(suitesData, function(s) {
+// return {
+// name: s
+// }
+// })
 });
 
 // kicks off the loading/processing
@@ -35,8 +46,8 @@ $('.typeahead').typeahead({
 
 $("[title]").tooltip()
 
-$('#console').click(function() {
-  $(this).offcanvas('toggle')
+$('#console').hover(function() {
+  $(this).offcanvas('show')
 })
 $("#console").animate({
   scrollTop: $("#console")[0].scrollHeight
@@ -49,7 +60,9 @@ $("#suitesSearchForm").submit(function(e) {
   if (suite && suite.length > 0) {
     input.val('')
     this.reset()
-    selectSuite(suite)
+    if (suitesData.indexOf(suite) >= 0) {
+      selectSuite(suite)
+    }
   }
 });
 

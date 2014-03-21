@@ -36,11 +36,11 @@ html {
 	width: 50em;
 	z-index: 10000000;
 	position: fixed;
-	right: -49em;
+	right: -49.9em;
 	top: 7em;
 	bottom: 4em;
 	background-color: black;
-	color: white;
+	color: #AAA;
 	font-family: monospace;
 	padding: 10px;
 	-webkit-border-radius: 5px;

@@ -6,6 +6,6 @@ require.config({
 
 $(function() {
   require(['editor'], function(editor) {
-    console.log('editor is loaded')
+    //console.log('editor is loaded')
   })
 })
