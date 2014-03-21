@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "typeaheadjs" % "0.10.2",
   "org.webjars" % "jasny-bootstrap" % "3.0.1-p7-1",
   //"org.webjars" % "bootswatch-flatly" % "3.1.1",
-  "org.webjars" % "bootswatch-simplex" % "3.1.1"
+  // "org.webjars" % "bootswatch-simplex" % "3.1.1",
+  "org.webjars" % "bootswatch-cosmo" % "3.1.1"
 )
 
 play.Project.playScalaSettings
