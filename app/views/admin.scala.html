@@ -15,7 +15,7 @@
                         <h2>@suites.size</h2>
                         <h5><p class="text-muted">suites</p></h5>
                         <a class="dropdown-toggle btn btn-default" data-toggle="dropdown">Suite List</a>
-                        <ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
+                        <ul class="dropdown-menu scrollable-menu" role="menu">
                             @for(suite <- suites) {
                             <li>&nbsp;@suite.name</li>
                             }
@@ -25,7 +25,7 @@
                         <h2>@koans.size</h2>
                         <h5><p class="text-muted">koans</p></h5>
                         <a class="dropdown-toggle btn btn-default" data-toggle="dropdown">Koans List</a>
-                        <ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
+                        <ul class="dropdown-menu scrollable-menu" role="menu">
                             @for(koan <- koans) {
                             <li>&nbsp;@koan.description</li>
                             }
@@ -36,7 +36,7 @@
             <div class="panel-footer" style="background: #fff">
                 <div class="row">
                     <div class="col-md-6">
-                        <a class="btn btn-default"  role="button" onclick="onUploadAndParseClick();">Upload and parse Koans</a>
+                        <a class="btn btn-default" role="button" onclick="onUploadAndParseClick();">Upload and parse Koans</a>
                     </div>
                     <div class="col-md-6">
                         <img src="/assets/images/loading.gif" id="loading-indicator" style="display:none" />
