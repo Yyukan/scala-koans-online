@@ -1,0 +1,44 @@
+@(suites: List[KoanSuite], koans:List[Koan])
+
+@main("Welcome to Koans Online") {
+<!-- some header is here -->
+} {
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default panel-warning" style="margin: 20px 20px 0px 20px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Koans Statistics</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>@suites.size</h2>
+                        <h5><p class="text-muted">suites</p></h5>
+                        <a class="dropdown-toggle btn btn-default" data-toggle="dropdown">Suite List</a>
+                        <ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
+                            @for(suite <- suites) {
+                            <li>&nbsp;@suite.name</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>@koans.size</h2>
+                        <h5><p class="text-muted">koans</p></h5>
+                        <a class="dropdown-toggle btn btn-default" data-toggle="dropdown">Koans List</a>
+                        <ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
+                            @for(koan <- koans) {
+                            <li>&nbsp;@koan.description</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer"><a class="btn btn-default" href="#" role="button">Upload and parse Koans</a></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+    </div>
+</div>
+} {
+<!-- some footer here -->
+}

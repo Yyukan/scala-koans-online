@@ -5,10 +5,13 @@
 # Home page
 GET    /                      controllers.Application.index
 
+#
+GET    /admin                 controllers.Application.admin
+
 # Koans manipulations
 GET    /editor                controllers.KoansController.editor
 POST   /koans/compile         controllers.KoansController.compile
-GET    /koans/parse           controllers.KoansController.koansParse
+GET    /koans/upload          controllers.KoansController.koansParse
 GET    /koans/list            controllers.KoansController.koansList
 GET    /koans/:suite          controllers.KoansController.koans(suite: String)
 GET    /koans/:suite/:order   controllers.KoansController.koan(suite: String, order:Long)

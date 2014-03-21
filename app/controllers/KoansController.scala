@@ -54,11 +54,15 @@ object KoansController extends Controller with MongoController {
   }
 
   def suitesList = Action.async {
-    val cursor: Cursor[KoanSuite] = suiteCollection.find(Json.obj()).cursor[KoanSuite]
-    val result: Future[List[KoanSuite]] = cursor.collect[List]()
+    val result: Future[List[KoanSuite]] = suitesAll()
     result.map { suite =>
       Ok(Json.toJson(suite))
     }
+  }
+
+  def suitesAll():Future[List[KoanSuite]] = {
+    val cursor: Cursor[KoanSuite] = suiteCollection.find(Json.obj()).cursor[KoanSuite]
+    cursor.collect[List]()
   }
 
   def suites(query: String) = Action.async {
@@ -71,13 +75,15 @@ object KoansController extends Controller with MongoController {
   }
 
   def koansList = Action.async {
-    val cursor: Cursor[Koan] = koansCollection.find(Json.obj()).cursor[Koan]
-
-    val result: Future[List[Koan]] = cursor.collect[List]()
-
+    val result: Future[List[Koan]] = koansAll()
     result.map { result =>
       Ok(result.toString)
     }
+  }
+
+  def koansAll():Future[List[Koan]] = {
+    val cursor: Cursor[Koan] = koansCollection.find(Json.obj()).cursor[Koan]
+    cursor.collect[List]()
   }
 
   def editor = Action.async {
