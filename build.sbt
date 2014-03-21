@@ -18,7 +18,8 @@ libraryDependencies ++= Seq(
   //"org.webjars" % "bootswatch-cosmo" % "3.1.1"
   //"org.webjars" % "bootswatch-united" % "3.1.1"
   //"org.webjars" % "bootswatch-spacelab" % "3.1.1"
-  "org.webjars" % "bootswatch-yeti" % "3.1.1"
+  //"org.webjars" % "bootswatch-yeti" % "3.1.1"
+  "org.webjars" % "bootswatch-readable" % "3.1.1"
 )
 
 play.Project.playScalaSettings
