@@ -5,7 +5,21 @@
 @main("Scala Koans - Editor") {
 	<!-- header -->
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		<p class="navbar-text navbar-right" style="color:#eeeeee;">Signed in as SK&nbsp;&nbsp;</p>
+    	<ul class="nav navbar-nav">
+      		<li class="dropdown">
+       			<a id="selectedSuite" suiteId="@selectedSuite.name" href="#" class="dropdown-toggle" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
+        		<ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
+        			@suites.map { suite =>
+       					@if(suite == selectedSuite) {
+	        				<li class="disabled" suiteId="@suite.name"><a href="#">@suite.name</a></li>
+   						} else {
+   							<li suiteId="@suite.name"><a href="#">@suite.name</a></li>
+   						}   			
+       				}
+        		</ul>
+      		</li>
+    	</ul>
+		<p class="navbar-right navbar-text" style="color:white">Signed in as SK&nbsp;&nbsp;</p>
        	<form id="suitesSearchForm" class="navbar-form navbar-right" role="search">
         	<div class="form-group">
           		<input type="text" class="form-control typeahead" placeholder="Search Suites">
@@ -20,35 +34,21 @@
 		<suite>@selectedSuite.name</suite>
 	</div>
 	
-	    <div class='btn-toolbar' role='toolbar' style="margin-left: 10px">
-            <div class="btn-group">
-                <ul class="pager">
-                <li class="dropdown">
-                    <a id="selectedSuite" suiteId="@selectedSuite.name" href="#" style="background-color:#C3CAA2;color:white" class="dropdown-toggle btn btn-default" data-toggle="dropdown">@selectedSuite.name<b class="caret"></b></a>
-                    <ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
-                        @suites.map { suite =>
-                        @if(suite == selectedSuite) {
-                        <li class="disabled" suiteId="@suite.name"><a href="#">@suite.name</a></li>
-                        } else {
-                        <li suiteId="@suite.name"><a style="background-color:#C3CAA2;color:white" href="#">@suite.name</a></li>
-                        }
-                        }
-                    </ul>
-                </li>
-                </ul>
-            </div>
-            <div class="btn-group" style="margin-left: 30px">
-                <ul class="pager">
-                    <li class="previous"><a id="prevKoan" href="#" style="background-color:#C3CAA2;color:white">&larr; Previous Koan</a></li>
-                    <li class="next"><a id="nextKoan" style="background-color:#C3CAA2;color:white" href="#">Next Koan &rarr;</a></li>
-                </ul>
-            </div>
-            <div class="btn-group" style="margin-left: 50px">
-                <ul class="pager">
-                    <li class="next"><a id="compile" style="background-color:#C3CAA2;color:white" href="#">Execute Koan</a></li>
-                </ul>
-            </div>
+	<div class='container'>
+	    <div class='btn-toolbar' role='toolbar'>
+	    	<div class='btn-group'>
+		        <button type="button" id="prevKoan" class="btn btn-primary navbar-btn" title="Previous Koan">
+		        	<span class="glyphicon glyphicon-chevron-left"></span>
+		        </button>
+		        <button type="button" id="nextKoan" class="btn btn-primary navbar-btn" title="Next Koan">
+					<span class="glyphicon glyphicon-chevron-right"></span>
+				</button>
+	    	</div>
+	        <button id="compile" type="button" class="btn btn-success navbar-btn" title="Execute Koan">
+	        	<span class="glyphicon glyphicon-expand"></span>
+	        </button>
 	    </div>
+	</div>
 
 	<div id="console"> 
 	> Console Aliquam erat volutpat. Sed urna arcu, tempus eu vulputate adipiscing, consectetur et orci. Vivamus congue, nunc vitae fringilla convallis, libero massa lacinia lorem, id convallis mauris elit ut leo. Nulla vel odio sem. Duis lorem urna, congue vitae rutrum sed, tincidunt vel tortor. In hac habitasse platea dictumst. Nunc vitae enim ante, vitae facilisis massa. Etiam sagittis sapien at nibh fermentum consectetur convallis lacus blandit.<br>
