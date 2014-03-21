@@ -12,6 +12,15 @@ html {
 	display: none;
 }
 
+nav.background-main {
+    background-color: #B21522;
+}
+
+a.background-main {
+    background-color: #B21522;
+    color: white;
+}
+
 #editor {
 	margin: 0;
 	position: absolute;
