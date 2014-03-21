@@ -35,6 +35,10 @@ $('.typeahead').typeahead({
 
 $("[title]").tooltip()
 
+$('#console').click(function() {
+  $(this).offcanvas('toggle')
+})
+
 $("#suitesSearchForm").submit(function(e) {
   e.preventDefault();
   var input = $(e.target[1])
@@ -42,7 +46,7 @@ $("#suitesSearchForm").submit(function(e) {
   if (suite && suite.length > 0) {
     input.val('')
     this.reset()
-    selectSuite(suite)    
+    selectSuite(suite)
   }
 });
 
