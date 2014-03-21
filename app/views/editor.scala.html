@@ -33,11 +33,23 @@
 		<koan-id>@koanId</koan-id>
 		<suite>@selectedSuite.name</suite>
 	</div>
-    <div id="editor-header">
-        <button type="button" id="prevKoan" class="btn btn-primary navbar-btn">Previous koan</button>
-        <button type="button" id="nextKoan" class="btn btn-primary navbar-btn">Next Koan</button>
-        <button id="compile" type="button" class="btn btn-primary navbar-btn pull-right">Run</button>
-    </div>
+	
+	<div class='container'>
+	    <div class='btn-toolbar' role='toolbar'>
+	    	<div class='btn-group'>
+		        <button type="button" id="prevKoan" class="btn btn-primary navbar-btn" title="Previous Koan">
+		        	<span class="glyphicon glyphicon-chevron-left"></span>
+		        </button>
+		        <button type="button" id="nextKoan" class="btn btn-primary navbar-btn" title="Next Koan">
+					<span class="glyphicon glyphicon-chevron-right"></span>
+				</button>
+	    	</div>
+	        <button id="compile" type="button" class="btn btn-success navbar-btn" title="Execute Koan">
+	        	<span class="glyphicon glyphicon-expand"></span>
+	        </button>
+	    </div>
+	</div>
+    
 	<div id="editor-container">
         <pre id="editor"></pre>
 	</div>
