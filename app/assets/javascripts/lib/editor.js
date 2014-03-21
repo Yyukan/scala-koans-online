@@ -33,6 +33,7 @@ $('.typeahead').typeahead({
   source: suites.ttAdapter()
 });
 
+$("[title]").tooltip()
 
 $("#suitesSearchForm").submit(function(e) {
   e.preventDefault();
@@ -52,11 +53,9 @@ var currentSuite = $("suite").text()
 selector = new Selector()
 selectSuite($('.dropdown > a').text())
 
-$("#nextKoan").tooltip()
 $("#nextKoan").click(function() {
   selectKoan(selector.suiteId, selector.next())
 })
-$("#prevKoan").tooltip()
 $("#prevKoan").click(function() {
   selectKoan(selector.suiteId, selector.prev())
 })
@@ -68,7 +67,6 @@ $("#suites").children().click(function() {
   }
 })
 
-$("#compile").tooltip()
 $("#compile").click(function() {
   compile()
 })
