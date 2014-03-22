@@ -151,8 +151,8 @@ object KoansController extends Controller with MongoController {
 
     Logger.info(s"Koan to execute $koan")
 
-    KoansInterpreter.execute(koan)
-    Ok("Ok")
+    val output = KoansInterpreter.execute(koan)
+    Ok(output)
   }
 
 }

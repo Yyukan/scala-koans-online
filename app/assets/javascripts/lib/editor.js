@@ -171,6 +171,9 @@ function selectSuite(suiteId) {
 }
 
 function compile() {
+  var console = $('#console')
+  console.offcanvas('show')
+  console.append('Compiling koan ...<br>')
   var koan = editor.getValue()
   $.ajax({
     type: "POST",
@@ -179,11 +182,17 @@ function compile() {
       koan: koan
     }),
     success: function(result) {
-      console.log(result)
+      appendConsole(result.responseText)
     },
     error: function(result) {
-      console.warn(result)
+      appendConsole(result.responseText)
     },
     dataType: "json"
   });
+}
+
+function appendConsole(text) {
+  var console = $('#console')
+  console.append(text.replace('\n', '<br>'))
+  console.append('<br>')
 }
