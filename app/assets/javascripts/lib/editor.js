@@ -173,7 +173,7 @@ function selectSuite(suiteId) {
 function compile() {
   var console = $('#console')
   console.offcanvas('show')
-  console.append('Compiling koan ...<br>')
+  console.append('<br>************ Compiling koan ... ************<br>')
   var koan = editor.getValue()
   $.ajax({
     type: "POST",
@@ -195,4 +195,7 @@ function appendConsole(text) {
   var console = $('#console')
   console.append(text.replace('\n', '<br>'))
   console.append('<br>')
+  console.animate({
+    scrollTop: $("#console")[0].scrollHeight
+  }, "slow");
 }

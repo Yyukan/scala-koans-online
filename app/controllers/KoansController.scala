@@ -149,7 +149,7 @@ object KoansController extends Controller with MongoController {
     val json: JsValue = request.body
     val koan: String = (json \ "koan").as[String]
 
-    Logger.info(s"Koan to execute $koan")
+    Logger.debug(s"Koan to execute $koan")
 
     val output = KoansInterpreter.execute(koan)
     Ok(output)
