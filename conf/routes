@@ -4,6 +4,7 @@
 
 # Home page
 GET    /                      controllers.Application.index
+GET    /ng                    controllers.Application.ngIndex
 
 #
 GET    /admin                 controllers.Application.admin
