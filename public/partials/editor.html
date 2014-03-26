@@ -1,3 +1,9 @@
+<script type="text/ng-template" id="customTemplate.html">
+  <a>
+      <span bind-html-unsafe="match.name | typeaheadHighlight:query"></span>
+  </a>
+</script>
+
 <!-- TODO move out partially from here later to the main view -->
 <nav class="navbar navbar-inverse navbar-fixed-top background-main"
 	role="navigation">
@@ -7,23 +13,26 @@
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 		<ul class="nav navbar-nav">
-			<li class="dropdown"><a href="#" class="dropdown-toggle"
+			<li class="dropdown"><a href class="dropdown-toggle"
 				data-toggle="dropdown">{{selectedSuite.name}}<b class="caret"></b>
 			</a>
 				<ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
 					<li ng-repeat='suite in suites'
-						ng-class='{disabled:suite.selected}'><a href="#">{{suite.name}}</a></li>
+						ng-class='{disabled:suite.selected}'><a href
+						ng-click="selectSuite(suite)">{{suite.name}}</a></li>
 				</ul></li>
 		</ul>
 
 		<p class="navbar-right navbar-text">Signed in as SK&nbsp;&nbsp;</p>
 
-		<div class="col-sm-2 col-md-2 pull-right">
-			<form id="suitesSearchForm" class="navbar-form navbar-right"
+		<div class="col-sm-3 col-md-3 pull-right">
+			<form ng-submit="search()" class="navbar-form navbar-right"
 				role="search">
 				<div class="input-group">
-					<input type="text" class="form-control typeahead"
-						placeholder="Search Suites">
+					<input type="text" class="form-control" placeholder="Search Suites"
+						ng-model="searchedSuite"
+						typeahead-template-url="customTemplate.html"
+						typeahead="suite as suite.name for suite in suites | filter:$viewValue | limitTo:8">
 					<div class="input-group-btn">
 						<button class="btn btn-success" type="submit">
 							<i class="glyphicon glyphicon-search"></i>

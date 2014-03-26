@@ -10,11 +10,11 @@ define(['angular', 'angular-resource'], function(angular) {
           'version', '0.1');
 
   services.factory('Suite', ['$resource', function($resource) {
-    return $resource('suites/:suiteId', {}, {
+    return $resource('suites/:name', {}, {
       query: {
         method: 'GET',
         params: {
-          suiteId: '@id'
+          name: "@id"
         },
         isArray: true
       }
@@ -22,13 +22,14 @@ define(['angular', 'angular-resource'], function(angular) {
   }])
 
   services.factory('Koan', ['$resource', function($resource) {
-    return $resource('koans/:suiteId', {}, {
+    return $resource('koans/:suite/:koan', {}, {
       query: {
         method: 'GET',
         params: {
-          suiteId: '@id'
+          suite: '@id',
+          koan: '@id'
         },
-        isArray: true
+        isArray: false
       }
     })
   }])

@@ -3,22 +3,22 @@
 # ~~~~
 
 # Home page
-GET    /                      controllers.Application.index
-GET    /ng                    controllers.Application.ngIndex
+GET    /                       controllers.Application.index
+GET    /ng                     controllers.Application.ngIndex
 
 #
-GET    /admin                 controllers.Application.admin
+GET    /admin                  controllers.Application.admin
 
 # Koans manipulations
-GET    /editor                controllers.KoansController.editor
-POST   /koans/compile         controllers.KoansController.compile
-GET    /koans/upload          controllers.KoansController.koansParse
-GET    /koans                 controllers.KoansController.koansList
-GET    /koans/:suite          controllers.KoansController.koans(suite: String)
-GET    /koans/:suite/:order   controllers.KoansController.koan(suite: String, order:Long)
-GET    /suites                controllers.KoansController.suitesList
-GET    /suites/:query         controllers.KoansController.suites(query:String)
+GET    /editor                 controllers.KoansController.editor
+POST   /koans/compile          controllers.KoansController.compile
+GET    /koans/upload           controllers.KoansController.koansParse
+GET    /koans                  controllers.KoansController.koansList
+GET    /koans/:suite/:id       controllers.KoansController.koan(suite: String, id:Long)
+GET    /suites                 controllers.KoansController.suitesList
+GET    /suites/:suite          controllers.KoansController.koans(suite: String)
+GET    /search/suites/:query   controllers.KoansController.suites(query:String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET    /assets/*file          controllers.Assets.at(path="/public", file)
-GET    /webjars/*file         controllers.WebJarAssets.at(file)
+GET    /webjars/*file          controllers.WebJarAssets.at(file)
+GET    /*file                  controllers.Assets.at(path="/public", file)

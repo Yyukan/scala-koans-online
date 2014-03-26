@@ -60,7 +60,7 @@ object KoansController extends Controller with MongoController {
     }
   }
 
-  def suitesAll():Future[List[KoanSuite]] = {
+  def suitesAll(): Future[List[KoanSuite]] = {
     val cursor: Cursor[KoanSuite] = suiteCollection.find(Json.obj()).cursor[KoanSuite]
     cursor.collect[List]()
   }
@@ -81,7 +81,7 @@ object KoansController extends Controller with MongoController {
     }
   }
 
-  def koansAll():Future[List[Koan]] = {
+  def koansAll(): Future[List[Koan]] = {
     val cursor: Cursor[Koan] = koansCollection.find(Json.obj()).cursor[Koan]
     cursor.collect[List]()
   }
@@ -112,7 +112,7 @@ object KoansController extends Controller with MongoController {
     val result: Future[List[Koan]] = cursor.collect[List]()
 
     result.map { list =>
-      Ok(Json.toJson(list.map(koan => koan.order)))
+      Ok(Json.obj("name" -> suite, "koans" -> Json.toJson(list.map(koan => koan.order))))
     }
   }
 

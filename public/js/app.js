@@ -20,9 +20,9 @@ require(['angular', 'angular-route', './controllers', './services'], function(
 
   app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {
-      templateUrl: 'assets/partials/home.html'
+      templateUrl: 'partials/home.html'
     }).when('/editor', {
-      templateUrl: 'assets/partials/editor.html',
+      templateUrl: 'partials/editor.html',
       controller: 'EditorController'
     }).otherwise({
       redirectTo: '/home'
