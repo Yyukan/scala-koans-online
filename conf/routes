@@ -13,11 +13,11 @@ GET    /admin                 controllers.Application.admin
 GET    /editor                controllers.KoansController.editor
 POST   /koans/compile         controllers.KoansController.compile
 GET    /koans/upload          controllers.KoansController.koansParse
-GET    /koans/list            controllers.KoansController.koansList
+GET    /koans                 controllers.KoansController.koansList
 GET    /koans/:suite          controllers.KoansController.koans(suite: String)
 GET    /koans/:suite/:order   controllers.KoansController.koan(suite: String, order:Long)
-GET    /suites/list           controllers.KoansController.suitesList
-GET    /suites/list/:query    controllers.KoansController.suites(query:String)
+GET    /suites                controllers.KoansController.suitesList
+GET    /suites/:query         controllers.KoansController.suites(query:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET    /assets/*file          controllers.Assets.at(path="/public", file)

@@ -1,3 +1,41 @@
+<!-- TODO move out partially from here later to the main view -->
+<nav class="navbar navbar-inverse navbar-fixed-top background-main"
+	role="navigation">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="/ng">Scala Koans Online</a>
+	</div>
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+		<ul class="nav navbar-nav">
+			<li class="dropdown"><a href="#" class="dropdown-toggle"
+				data-toggle="dropdown">{{selectedSuite.name}}<b class="caret"></b>
+			</a>
+				<ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
+					<li ng-repeat='suite in suites'
+						ng-class='{disabled:suite.selected}'><a href="#">{{suite.name}}</a></li>
+				</ul></li>
+		</ul>
+
+		<p class="navbar-right navbar-text">Signed in as SK&nbsp;&nbsp;</p>
+
+		<div class="col-sm-2 col-md-2 pull-right">
+			<form id="suitesSearchForm" class="navbar-form navbar-right"
+				role="search">
+				<div class="input-group">
+					<input type="text" class="form-control typeahead"
+						placeholder="Search Suites">
+					<div class="input-group-btn">
+						<button class="btn btn-success" type="submit">
+							<i class="glyphicon glyphicon-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+</nav>
+
 
 <div class='container'>
 	<div class='btn-toolbar' role='toolbar'>

@@ -11,10 +11,12 @@ require.config({
   }
 })
 
-require(['angular', 'angular-route', './controllers'], function(angular) {
+require(['angular', 'angular-route', './controllers', './services'], function(
+        angular) {
 
   // Declare app level module which depends on filters, and services
-  var app = angular.module('koansApp', ['ngRoute', 'koansControllers']);
+  var app = angular.module('koansApp', ['ngRoute', 'koansControllers',
+      'koansServices']);
 
   app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {
