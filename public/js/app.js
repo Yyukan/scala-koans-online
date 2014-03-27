@@ -4,7 +4,6 @@
 
 require.config({
   paths: {
-
     // TODO should not be needed after play-webjars upgrade
     // @see https://github.com/webjars/webjars-play#requirejs
     ace: '../../webjars/ace/01.08.2014/src-noconflict/ace'
