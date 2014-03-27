@@ -119,6 +119,7 @@ object KoansController extends Controller with MongoController {
       Ok(Json.obj(
         "id" -> koan.order,
         "suite" -> koan.suite,
+        "description" -> koan.description,
         "content" -> s"""koan(\"${koan.description}\") ${koan.content}"""))
     }
   }

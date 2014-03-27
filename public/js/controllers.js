@@ -98,7 +98,7 @@ define(deps, function(angular) {
           }, "slow");
 
           Compiler.compile({
-            koan: koan.content
+            koan: editor.getValue()
           }, function(result) {
             $scope.consoleText += result.output.split('\n').join('<br>')
             $('#console').animate({
@@ -113,7 +113,7 @@ define(deps, function(angular) {
 
         // shortcuts
         $scope.keyPressed = function(e) {
-          // console.log(e)
+          console.log(e)
           if (e.ctrlKey && e.keyCode === 10) {
             $scope.koan.compile()
           }
