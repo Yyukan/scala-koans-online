@@ -24,9 +24,6 @@ define(['angular', 'ace', 'ui-bootstrap'], function(angular) {
           $scope.selectSuite(suites[0])
         })
 
-        // set up tooltips
-        $("[title]").tooltip()
-
         // make console hideable
         $('#console').hover(function() {
           $(this).offcanvas('show')
@@ -41,18 +38,45 @@ define(['angular', 'ace', 'ui-bootstrap'], function(angular) {
             suite.selected = false
           });
 
-          suite.selected = true;
-          $scope.selectedSuite = suite;
-
           Suite.get(suite, function(suite) {
-            $scope.koan = Koan.get({
-              suite: suite.name,
-              koan: suite.koans[0]
-            }, function(koan) {
-              editor.setValue(koan.content);
-              editor.gotoLine(0);
-            });
+            suite.selected = true;
+            $scope.selectedSuite = suite;
+            $scope.selectKoan(suite.koans[0])
           });
+        };
+
+        // select koan
+        $scope.selectKoan = function(id) {
+          var suite = $scope.selectedSuite
+          Koan.get({
+            suite: suite.name,
+            koan: id
+          }, function(koan) {
+            $scope.koan = koan
+
+            // koans navigation
+            var suite = $scope.selectedSuite
+            var koans = suite.koans
+            koan.isFirst = koans[0] === koan.id
+            koan.isLast = koans[koans.length - 1] === koan.id
+            koan.next = function() {
+              if (!koan.isLast) {
+                $scope.selectKoan(koans.next())
+              }
+            }
+            koan.prev = function() {
+              if (!koan.isFirst) {
+                $scope.selectKoan(koans.prev())
+              }
+            }
+            koan.compile = function() {
+              console.log('compile')
+            }
+
+            // set editor content
+            editor.setValue(koan.content);
+            editor.gotoLine(0);
+          })
         };
 
         // search suite

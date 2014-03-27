@@ -136,7 +136,7 @@ object KoansController extends Controller with MongoController {
       val koan: Koan = list.head
 
       Ok(Json.obj(
-        "order" -> koan.order,
+        "id" -> koan.order,
         "suite" -> koan.suite,
         "content" -> s"""koan(\"${koan.description}\") ${koan.content}"""))
     }

@@ -11,6 +11,16 @@ require.config({
   }
 })
 
+// enhance Array
+Array.prototype.next = function() {
+  return this[++this.current];
+};
+Array.prototype.prev = function() {
+  return this[--this.current];
+};
+Array.prototype.current = 0;
+
+// load libs
 require(['angular', 'angular-route', './controllers', './services'], function(
         angular) {
 
