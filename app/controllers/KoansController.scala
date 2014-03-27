@@ -77,7 +77,7 @@ object KoansController extends Controller with MongoController {
   def koansList = Action.async {
     val result: Future[List[Koan]] = koansAll()
     result.map { result =>
-      Ok(result.toString)
+      Ok(Json.toJson(result))
     }
   }
 

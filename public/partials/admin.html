@@ -1,0 +1,57 @@
+<!-- TODO move out from here later to the main view -->
+<nav class="navbar navbar-inverse navbar-fixed-top background-main"
+	role="navigation">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="/ng">Scala Koans Online</a>
+	</div>
+</nav>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-default panel-warning"
+			style="margin: 20px 20px 0px 20px">
+			<div class="panel-heading">
+				<h3 class="panel-title">Koans Statistics</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-6">
+						<h2>{{suites.length}}</h2>
+						<h5>
+							<p class="text-muted">suites</p>
+						</h5>
+						<a class="dropdown-toggle btn btn-default" data-toggle="dropdown">Suite
+							List</a>
+						<ul class="dropdown-menu scrollable-menu" role="menu">
+							<li ng-repeat="suite in suites">&nbsp;{{suite.name}}</li>
+						</ul>
+					</div>
+					<div class="col-md-6">
+						<h2>{{koans.length}}</h2>
+						<h5>
+							<p class="text-muted">koans</p>
+						</h5>
+						<a class="dropdown-toggle btn btn-default" data-toggle="dropdown">Koans
+							List</a>
+						<ul class="dropdown-menu scrollable-menu" role="menu">
+							<li ng-repeat="koan in koans">&nbsp;{{koan.description}}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer" style="background: #fff">
+				<div class="row">
+					<div class="col-md-6">
+						<a class="btn btn-default" role="button"
+							onclick="onUploadAndParseClick();">Upload and parse Koans</a>
+					</div>
+					<div class="col-md-6">
+						<img src="/images/loading.gif" id="loading-indicator"
+							style="display: none" />
+						<p id="parse-result-id" class="text-info"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

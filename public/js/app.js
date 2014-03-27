@@ -34,6 +34,9 @@ require(['angular', 'angular-route', './controllers', './services'], function(
     }).when('/editor', {
       templateUrl: 'partials/editor.html',
       controller: 'EditorController'
+    }).when('/admin', {
+      templateUrl: 'partials/admin.html',
+      controller: 'AdminController'
     }).otherwise({
       redirectTo: '/home'
     });

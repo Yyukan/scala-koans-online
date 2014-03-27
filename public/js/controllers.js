@@ -15,6 +15,13 @@ define(deps, function(angular) {
   var appControllers = angular.module('koansControllers', ['ui.bootstrap',
       'ngSanitize'])
 
+  appControllers.controller('AdminController', ['$scope', 'Suite', 'Koan',
+      function($scope, Suite, Koan) {
+        // display suites
+        $scope.suites = Suite.query()
+        $scope.koans = Koan.query()
+      }])
+
   appControllers.controller('EditorController', ['$scope', 'Suite', 'Koan',
       'Compiler', function($scope, Suite, Koan, Compiler) {
 

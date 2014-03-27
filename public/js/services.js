@@ -29,8 +29,8 @@ define(['angular', 'angular-resource'], function(angular) {
           suite: '@id',
           koan: '@id'
         },
-        isArray: false
-      }
+        isArray: true
+      },
     })
   }])
 
