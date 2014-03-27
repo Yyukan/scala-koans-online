@@ -20,12 +20,12 @@ Array.prototype.prev = function() {
 Array.prototype.current = 0;
 
 // load libs
-require(['angular', 'angular-route', './controllers', './services'], function(
-        angular) {
+require(['angular', 'angular-route', './controllers', './services',
+    './directives'], function(angular) {
 
   // Declare app level module which depends on filters, and services
   var app = angular.module('koansApp', ['ngRoute', 'koansControllers',
-      'koansServices']);
+      'koansServices', 'koansDirectives']);
 
   app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {

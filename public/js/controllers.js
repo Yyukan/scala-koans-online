@@ -110,6 +110,17 @@ define(deps, function(angular) {
         // set editor content
         editor.setValue(koan.content);
         editor.gotoLine(0);
+
+        // shortcuts
+        $scope.keyPressed = function(e) {
+          // console.log(e)
+          if (e.ctrlKey && e.keyCode === 10) {
+            $scope.koan.compile()
+          }
+          if (e.ctrlKey && e.keyCode === 28) {
+            // focus search
+          }
+        }
       })
     };
 
