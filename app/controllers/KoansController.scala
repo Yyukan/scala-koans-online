@@ -152,7 +152,8 @@ object KoansController extends Controller with MongoController {
     Logger.debug(s"Koan to execute $koan")
 
     val output = KoansInterpreter.execute(koan)
-    Ok(output)
+    // TODO return code
+    Ok(Json.obj("returnCode" -> 0, "output" -> output))
   }
 
 }

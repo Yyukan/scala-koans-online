@@ -34,4 +34,16 @@ define(['angular', 'angular-resource'], function(angular) {
     })
   }])
 
+  services.factory('Compiler', ['$resource', function($resource) {
+    return $resource('koans/compile', {}, {
+      compile: {
+        method: 'POST',
+        params: {
+          koan: '@content'
+        },
+        isArray: false
+      }
+    })
+  }])
+
 });

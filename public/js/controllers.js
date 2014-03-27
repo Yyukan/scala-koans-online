@@ -2,16 +2,21 @@
 
 'use strict';
 
-define(['angular', 'ace', 'ui-bootstrap'], function(angular) {
+var deps = ['angular', 'ace', 'ui-bootstrap', 'angular-sanitize']
+
+define(deps, function(angular) {
 
   if (!ace) throw Error('ace editor is not loaded!')
 
+  var compileKoanTxt = "<br>************ Compiling koan ... ************<br>"
+
   /* Controllers */
 
-  var appControllers = angular.module('koansControllers', ['ui.bootstrap'])
+  var appControllers = angular.module('koansControllers', ['ui.bootstrap',
+      'ngSanitize'])
 
   appControllers.controller('EditorController', ['$scope', 'Suite', 'Koan',
-      function($scope, Suite, Koan) {
+      'Compiler', function($scope, Suite, Koan, Compiler) {
 
         // set up ace
         var editor = ace.edit("editor");
@@ -25,6 +30,7 @@ define(['angular', 'ace', 'ui-bootstrap'], function(angular) {
         })
 
         // make console hideable
+        $scope.consoleText = "Welcome to Scala Interpreter!<br>"
         $('#console').hover(function() {
           $(this).offcanvas('show')
         })
@@ -70,7 +76,20 @@ define(['angular', 'ace', 'ui-bootstrap'], function(angular) {
               }
             }
             koan.compile = function() {
-              console.log('compile')
+              $('#console').offcanvas('show')
+              $scope.consoleText += compileKoanTxt
+              $('#console').animate({
+                scrollTop: $("#console")[0].scrollHeight
+              }, "slow");
+
+              Compiler.compile({
+                koan: koan.content
+              }, function(result) {
+                $scope.consoleText += result.output.split('\n').join('<br>')
+                $('#console').animate({
+                  scrollTop: $("#console")[0].scrollHeight
+                }, "slow");
+              })
             }
 
             // set editor content
