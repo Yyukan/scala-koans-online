@@ -16,10 +16,18 @@ define(deps, function(angular) {
       'ngSanitize'])
 
   appControllers.controller('AdminController', ['$scope', 'Suite', 'Koan',
-      function($scope, Suite, Koan) {
+      'AdminKoans', function($scope, Suite, Koan, AdminKoans) {
         // display suites
         $scope.suites = Suite.query()
         $scope.koans = Koan.query()
+        $scope.uploadKoans = function() {
+          $scope.isUploading = true
+          console.log('start loading ...')
+          AdminKoans.upload(function() {
+            $scope.isUploading = false
+            console.log('done!')
+          })
+        }
       }])
 
   appControllers.controller('EditorController', ['$scope', 'Suite', 'Koan',

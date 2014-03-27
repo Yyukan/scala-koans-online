@@ -2,7 +2,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top background-main"
 	role="navigation">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="/ng">Scala Koans Online</a>
+		<a class="navbar-brand" href="/">Scala Koans Online</a>
 	</div>
 </nav>
 
@@ -43,11 +43,11 @@
 				<div class="row">
 					<div class="col-md-6">
 						<a class="btn btn-default" role="button"
-							onclick="onUploadAndParseClick();">Upload and parse Koans</a>
+							ng-click="uploadKoans()">Upload and parse Koans</a>
 					</div>
 					<div class="col-md-6">
 						<img src="/images/loading.gif" id="loading-indicator"
-							style="display: none" />
+							ng-show='isUploading' />
 						<p id="parse-result-id" class="text-info"></p>
 					</div>
 				</div>

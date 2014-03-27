@@ -1,14 +1,8 @@
-<script type="text/ng-template" id="customTemplate.html">
-  <a>
-      <span bind-html-unsafe="match.name | typeaheadHighlight:query"></span>
-  </a>
-</script>
-
 <!-- TODO move out partially from here later to the main view -->
 <nav class="navbar navbar-inverse navbar-fixed-top background-main"
 	role="navigation">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="/ng">Scala Koans Online</a>
+		<a class="navbar-brand" href="/">Scala Koans Online</a>
 	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
@@ -31,7 +25,6 @@
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Search Suites"
 						ng-model="searchedSuite"
-						typeahead-template-url="customTemplate.html"
 						typeahead="suite as suite.name for suite in suites | filter:$viewValue | limitTo:8">
 					<div class="input-group-btn">
 						<button class="btn btn-success" type="submit">

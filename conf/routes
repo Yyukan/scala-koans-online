@@ -4,13 +4,8 @@
 
 # Home page
 GET    /                       controllers.Application.index
-GET    /ng                     controllers.Application.ngIndex
-
-#
-GET    /admin                  controllers.Application.admin
 
 # Koans manipulations
-GET    /editor                 controllers.KoansController.editor
 POST   /koans/compile          controllers.KoansController.compile
 GET    /koans/upload           controllers.KoansController.koansParse
 GET    /koans                  controllers.KoansController.koansList

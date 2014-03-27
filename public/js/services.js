@@ -10,27 +10,16 @@ define(['angular', 'angular-resource'], function(angular) {
           'version', '0.1');
 
   services.factory('Suite', ['$resource', function($resource) {
-    return $resource('suites/:name', {}, {
-      query: {
-        method: 'GET',
-        params: {
-          name: "@id"
-        },
-        isArray: true
-      }
-    })
+    return $resource('suites/:name', {}, {})
   }])
 
   services.factory('Koan', ['$resource', function($resource) {
-    return $resource('koans/:suite/:koan', {}, {
-      query: {
-        method: 'GET',
-        params: {
-          suite: '@id',
-          koan: '@id'
-        },
-        isArray: true
-      },
+    return $resource('koans/:suite/:koan', {}, {})
+  }])
+
+  services.factory('AdminKoans', ['$resource', function($resource) {
+    return $resource('koans/upload', {}, {
+      upload: {}
     })
   }])
 
@@ -40,8 +29,7 @@ define(['angular', 'angular-resource'], function(angular) {
         method: 'POST',
         params: {
           koan: '@content'
-        },
-        isArray: false
+        }
       }
     })
   }])
