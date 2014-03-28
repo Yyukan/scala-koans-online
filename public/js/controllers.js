@@ -99,7 +99,8 @@ define(deps, function(angular) {
           }, "slow");
 
           Compiler.compile({
-            koan: editor.getValue()
+            koan: editor.getValue(),
+            suite: suite.name
           }, function(result) {
             $scope.consoleText += ansi2html.toHtml(result.output).split('\n')
                     .join('<br>')

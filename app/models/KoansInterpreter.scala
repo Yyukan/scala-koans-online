@@ -20,7 +20,7 @@ object KoansInterpreter {
   settings.sourcepath.value +=
     scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/src"
 
-  def execute(koan: String): String = {
+  def execute(koan: String, suite: String): String = {
     val in = new IMain(settings) {
       override protected def parentClassLoader = settings.getClass.getClassLoader
     }
@@ -29,10 +29,10 @@ object KoansInterpreter {
     import org.scalatest.matchers.ShouldMatchers
     import support.KoanSuite
 
-    class AboutAdvancedOption extends KoanSuite with ShouldMatchers { ${koan} }"""
+    class ${suite} extends KoanSuite with ShouldMatchers { ${koan} }"""
 
     val output1 = exec(source, in)
-    val output2 = exec("(new AboutAdvancedOption).execute()", in)
+    val output2 = exec(s"(new ${suite}).execute()", in)
 
     s"$output1\n$output2"
   }

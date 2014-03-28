@@ -129,11 +129,12 @@ object KoansController extends Controller with MongoController {
    */
   def compile = Action(parse.json) { request =>
     val json: JsValue = request.body
+    Logger.debug("Compile " + json)
     val koan: String = (json \ "koan").as[String]
+    val suite: String = (json \ "suite").as[String]
+    Logger.debug(s"Suite $suite koan to execute $koan")
 
-    Logger.debug(s"Koan to execute $koan")
-
-    val output = KoansInterpreter.execute(koan)
+    val output = KoansInterpreter.execute(koan, suite)
     // TODO return code
     Ok(Json.obj("returnCode" -> 0, "output" -> output))
   }
