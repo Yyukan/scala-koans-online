@@ -2,7 +2,8 @@
 
 'use strict';
 
-var deps = ['angular', 'ace', 'ui-bootstrap', 'angular-sanitize']
+var deps = ['angular', 'ace', 'ui-bootstrap', 'angular-sanitize',
+    'ext/ansi2html']
 
 define(deps, function(angular) {
 
@@ -13,7 +14,7 @@ define(deps, function(angular) {
   /* Controllers */
 
   var appControllers = angular.module('koansControllers', ['ui.bootstrap',
-      'ngSanitize'])
+      'ngSanitize', 'ansiToHtml'])
 
   var adminController = function($scope, Suite, Koan, AdminKoans) {
     // display suites
@@ -30,9 +31,9 @@ define(deps, function(angular) {
   };
 
   appControllers.controller('AdminController', ['$scope', 'Suite', 'Koan',
-      'AdminKoans', adminController]);
+      'AdminKoans', 'ansi2html', adminController]);
 
-  var editorController = function($scope, Suite, Koan, Compiler) {
+  var editorController = function($scope, Suite, Koan, Compiler, ansi2html) {
     // set up ace
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/eclipse");
@@ -100,7 +101,8 @@ define(deps, function(angular) {
           Compiler.compile({
             koan: editor.getValue()
           }, function(result) {
-            $scope.consoleText += result.output.split('\n').join('<br>')
+            $scope.consoleText += ansi2html.toHtml(result.output).split('\n')
+                    .join('<br>')
             $('#console').animate({
               scrollTop: $("#console")[0].scrollHeight
             }, "slow");
@@ -113,7 +115,7 @@ define(deps, function(angular) {
 
         // shortcuts
         $scope.keyPressed = function(e) {
-          //console.log(e)
+          // console.log(e)
           if (e.ctrlKey && e.keyCode === 10) {
             $scope.koan.compile()
           }
@@ -136,6 +138,6 @@ define(deps, function(angular) {
   };
 
   appControllers.controller('EditorController', ['$scope', 'Suite', 'Koan',
-      'Compiler', editorController]);
+      'Compiler', 'ansi2html', editorController]);
 
 });
