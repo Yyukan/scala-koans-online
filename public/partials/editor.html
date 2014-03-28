@@ -8,7 +8,7 @@
 
 		<ul class="nav navbar-nav">
 			<li class="dropdown"><a href class="dropdown-toggle"
-				data-toggle="dropdown">{{selectedSuite.name}}<b class="caret"></b>
+				data-toggle="dropdown">{{suite.name}}<b class="caret"></b>
 			</a>
 				<ul id="suites" class="dropdown-menu scrollable-menu" role="menu">
 					<li ng-repeat='suite in suites'
@@ -18,6 +18,7 @@
 		</ul>
 
 		<p class="navbar-right navbar-text">Signed in as SK&nbsp;&nbsp;</p>
+
 
 		<div class="col-sm-3 col-md-3 pull-right">
 			<form ng-submit="search()" class="navbar-form navbar-right"
@@ -34,33 +35,26 @@
 				</div>
 			</form>
 		</div>
-
+		<button id="compile" type="button"
+			class="btn btn-success navbar-btn pull-right"
+			tooltip-placement="bottom" tooltip="Execute Koan (Ctrl+Enter)"
+			ng-click="koan.compile()">
+			<span class="glyphicon glyphicon-expand"></span>
+		</button>
 	</div>
 </nav>
 
 <shortcut></shortcut>
 
 <div class='container'>
-	<div class='btn-toolbar' role='toolbar'>
-		<div class='btn-group'>
-			<button type="button" id="prevKoan"
-				ng-class="{disabled:koan.isFirst}"
-				class="btn btn-primary navbar-btn" tooltip-placement="bottom"
-				tooltip="Previous Koan" ng-click="koan.prev()">
-				<span class="glyphicon glyphicon-chevron-left"></span>
-			</button>
-			<button type="button" id="nextKoan" ng-class="{disabled:koan.isLast}"
-				class="btn btn-primary navbar-btn" tooltip-placement="bottom"
-				tooltip="Next Koan" ng-click="koan.next()">
-				<span class="glyphicon glyphicon-chevron-right"></span>
-			</button>
-		</div>
-		<button id="compile" type="button" class="btn btn-success navbar-btn"
-			tooltip-placement="bottom" tooltip="Execute Koan (Ctrl+Enter)"
-			ng-click="koan.compile()">
-			<span class="glyphicon glyphicon-expand"></span>
-		</button>
-	</div>
+	<ul class="pagination">
+		<li ng-class="{disabled:koan.isFirst}"><a href
+			ng-click="koan.prev()">&laquo;</a></li>
+		<li ng-repeat="koanId in suite.koans" ng-click="selectKoan(koanId)"
+			ng-class="{active:(koanId === koan.id)}"><a href>{{koanId}}</a></li>
+		<li ng-class="{disabled:koan.isLast}"><a href
+			ng-click="koan.next()">&raquo;</a></li>
+	</ul>
 </div>
 
 <div id="console" ng-bind-html="consoleText"></div>

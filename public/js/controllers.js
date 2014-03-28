@@ -61,14 +61,14 @@ define(deps, function(angular) {
 
       Suite.get(suite, function(suite) {
         suite.selected = true;
-        $scope.selectedSuite = suite;
+        $scope.suite = suite;
         $scope.selectKoan(suite.koans[0])
       });
     };
 
     // select koan
     $scope.selectKoan = function(id) {
-      var suite = $scope.selectedSuite
+      var suite = $scope.suite
       Koan.get({
         suite: suite.name,
         koan: id
@@ -76,7 +76,7 @@ define(deps, function(angular) {
         $scope.koan = koan
 
         // koans navigation
-        var suite = $scope.selectedSuite
+        var suite = $scope.suite
         var koans = suite.koans
         koan.isFirst = koans[0] === koan.id
         koan.isLast = koans[koans.length - 1] === koan.id
