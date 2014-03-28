@@ -90,10 +90,11 @@ object KoansParser {
    * }
    *
    * Here ClassUnderTest is suite context
-   * @param path - koan suite file
+   * @param source - koan suite source as string
    * @return suite context
    */
-  def parseSuiteContext(path: String): String = {
+  def parseSuiteContext(source: String): String = {
+    // TODO:oshtykhno fix
     ""
   }
 
@@ -127,7 +128,7 @@ object KoansParser {
 
     sources(zipFileName).map {
       case (key, value) => {
-        val suite = KoanSuite(parseSuiteName(key), parseSuiteContext(key))
+        val suite = KoanSuite(parseSuiteName(key), parseSuiteContext(value))
         suite -> parse(suite.name, value)
       }
     }
