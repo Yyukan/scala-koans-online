@@ -6,6 +6,8 @@ import scala.tools.nsc.interpreter._
 import scala.tools.nsc.util.ClassPath
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
+import play.api.Logger
+import scala.tools.nsc.interpreter.Logger
 
 /**
  * Compiles and execute koan
@@ -20,7 +22,7 @@ object KoansInterpreter {
   settings.sourcepath.value +=
     scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/src"
 
-  def execute(koan: String, suite: String): String = {
+  def execute(koan: String, suite: String): (String, Int) = {
     val in = new IMain(settings) {
       override protected def parentClassLoader = settings.getClass.getClassLoader
     }
@@ -31,20 +33,25 @@ object KoansInterpreter {
 
     class ${suite} extends KoanSuite with ShouldMatchers { ${koan} }"""
 
-    val output1 = exec(source, in)
-    val output2 = exec(s"(new ${suite}).execute()", in)
-
-    s"$output1\n$output2"
+    // first interpret koan itself and then execute
+    val result = exec(source, in)
+    result._2 match {
+      case 0 => exec(s"(new ${suite}).execute()", in)
+      case error => result
+    }
   }
 
-  private def exec(cmd: String, in: IMain): String = {
-    val baos = new ByteArrayOutputStream();
-    val stream = new PrintStream(baos);
+  private def exec(cmd: String, in: IMain): (String, Int) = {
+    val buffer = new ByteArrayOutputStream()
+    val stream = new PrintStream(buffer)
     try {
-      Console.withOut(stream)(in.interpret(cmd));
-      baos.toString
+      Console.withOut(stream)(in.interpret(cmd)) match {
+        case IR.Success => (buffer.toString, 0)
+        case IR.Error => (buffer.toString, 1)
+        case IR.Incomplete => (buffer.toString, 2)
+      }
     } finally {
-      stream.flush
+      stream.flush()
     }
   }
 
