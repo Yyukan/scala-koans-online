@@ -69,6 +69,35 @@ object KoansParser {
   }
 
   /**
+   * Parses suite name
+   *
+   * @param path - like /scala/org/functionalkoans/forscala/AboutSequencesAndArrays.scala
+   * @return suite name, for example AboutSequencesAndArrays
+   */
+  def parseSuiteName(path: String): String = {
+    new File(path).getName.dropRight(7)
+  }
+
+  /**
+   * Suite context is some code which koan could refers
+   *
+   * For example
+   *
+   * case class ClassUnderTest(name = "aaa")
+   *
+   * class AboutClass extends KoanSuite {
+   *  koan(...) {}
+   * }
+   *
+   * Here ClassUnderTest is suite context
+   * @param path - koan suite file
+   * @return suite context
+   */
+  def parseSuiteContext(path: String): String = {
+    ""
+  }
+
+  /**
    * Loads koans
    */
   def load():Map[KoanSuite, Seq[Koan]] = {
@@ -89,16 +118,6 @@ object KoansParser {
       }.toMap
     }
 
-    /**
-     * Parses suite name
-     *
-     * @param path - like /scala/org/functionalkoans/forscala/AboutSequencesAndArrays.scala
-     * @return suite name, for example AboutSequencesAndArrays
-     */
-    def parseSuiteName(path: String): String = {
-      new File(path).getName.dropRight(7)
-    }
-
     val zipFileName = "/tmp/koans.zip"
     val file = new File(zipFileName)
 
@@ -108,7 +127,7 @@ object KoansParser {
 
     sources(zipFileName).map {
       case (key, value) => {
-        val suite = KoanSuite(name = parseSuiteName(key))
+        val suite = KoanSuite(parseSuiteName(key), parseSuiteContext(key))
         suite -> parse(suite.name, value)
       }
     }

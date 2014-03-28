@@ -1,9 +1,9 @@
 package support
 
 import org.scalatest.exceptions.TestPendingException
-import org.scalatest.{Tracker, Stopper, Reporter, FunSuite}
+import org.scalatest._
 import org.scalatest.matchers.{Matcher, ShouldMatchers}
-import org.scalatest.events.{TestPending, TestFailed, TestIgnored, Event}
+import org.scalatest.events.{TestPending, TestFailed, TestIgnored, TestSucceeded, Event}
 
 trait KoanSuite extends FunSuite with ShouldMatchers {
 
@@ -15,6 +15,14 @@ trait KoanSuite extends FunSuite with ShouldMatchers {
 
   protected class ___ extends Exception {
     override def toString = "___"
+  }
+
+  protected override def runTest(testName: String, args : org.scalatest.Args) = {
+    val result: Status = super.runTest(testName, args)
+    if (result.succeeds()) {
+      note(" SUCCESS ")
+    }
+    result
   }
 
 }
