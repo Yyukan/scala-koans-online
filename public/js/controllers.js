@@ -113,12 +113,12 @@ define(deps, function(angular) {
 
         // shortcuts
         $scope.keyPressed = function(e) {
-          console.log(e)
+          //console.log(e)
           if (e.ctrlKey && e.keyCode === 10) {
             $scope.koan.compile()
           }
           if (e.ctrlKey && e.keyCode === 28) {
-            // focus search
+            $scope.focusSearch = true
           }
         }
       })
@@ -131,6 +131,7 @@ define(deps, function(angular) {
         $scope.selectSuite(suite)
       }
       $scope.searchedSuite = ''
+      $scope.focusSearch = false
     }
   };
 

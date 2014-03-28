@@ -23,8 +23,8 @@
 			<form ng-submit="search()" class="navbar-form navbar-right"
 				role="search">
 				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Search Suites (Ctrl+\)"
-						ng-model="searchedSuite"
+					<input type="text" focus-me="focusSearch" class="form-control"
+						placeholder="Search Suites (Ctrl+\)" ng-model="searchedSuite"
 						typeahead="suite as suite.name for suite in suites | filter:$viewValue | limitTo:8">
 					<div class="input-group-btn">
 						<button class="btn btn-success" type="submit">
@@ -46,12 +46,12 @@
 			<button type="button" id="prevKoan"
 				ng-class="{disabled:koan.isFirst}"
 				class="btn btn-primary navbar-btn" tooltip-placement="bottom"
-				tooltip="Previous Koan (Ctrl+Left)" ng-click="koan.prev()">
+				tooltip="Previous Koan" ng-click="koan.prev()">
 				<span class="glyphicon glyphicon-chevron-left"></span>
 			</button>
 			<button type="button" id="nextKoan" ng-class="{disabled:koan.isLast}"
 				class="btn btn-primary navbar-btn" tooltip-placement="bottom"
-				tooltip="Next Koan (Ctrl+Right)" ng-click="koan.next()">
+				tooltip="Next Koan" ng-click="koan.next()">
 				<span class="glyphicon glyphicon-chevron-right"></span>
 			</button>
 		</div>
