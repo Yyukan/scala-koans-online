@@ -1,4 +1,4 @@
-<!-- TODO move out partially from here later to the main view -->
+<!-- TODO move out partially from here to the main view -->
 <nav class="navbar navbar-inverse navbar-fixed-top background-main"
 	role="navigation">
 	<div class="navbar-header">
@@ -50,7 +50,8 @@
 	<ul class="pagination">
 		<li ng-class="{disabled:koan.isFirst}"><a href
 			ng-click="koan.prev()">&laquo;</a></li>
-		<li ng-repeat="koanId in suite.koans" ng-click="selectKoan(koanId)"
+		<li ng-repeat="koanId in suite.koans | orderBy"
+			ng-click="selectKoan(koanId)"
 			ng-class="{active:(koanId === koan.id)}"><a href>{{koanId}}</a></li>
 		<li ng-class="{disabled:koan.isLast}"><a href
 			ng-click="koan.next()">&raquo;</a></li>

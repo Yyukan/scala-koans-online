@@ -16,6 +16,8 @@ define(deps, function(angular) {
   var appControllers = angular.module('koansControllers', ['ui.bootstrap',
       'ngSanitize', 'ansiToHtml'])
 
+  // ============ ADMIN CTRL ==================
+
   var adminController = function($scope, Suite, Koan, AdminKoans) {
     // display suites
     $scope.suites = Suite.query()
@@ -31,9 +33,12 @@ define(deps, function(angular) {
   };
 
   appControllers.controller('AdminController', ['$scope', 'Suite', 'Koan',
-      'AdminKoans', 'ansi2html', adminController]);
+      'AdminKoans', adminController]);
 
-  var editorController = function($scope, Suite, Koan, Compiler, ansi2html) {
+  // ============ EDITOR CTRL ==================
+
+  var editorController = function($scope, Suite, Koan, Compiler, ansi2html,
+          $filter, $sce) {
     // set up ace
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/eclipse");
@@ -41,8 +46,9 @@ define(deps, function(angular) {
     editor.setFontSize('14px')
 
     // display suites
-    $scope.suites = Suite.query(function(suites) {
-      $scope.selectSuite(suites[0])
+    Suite.query(function(suites) {
+      $scope.suites = $filter('orderBy')(suites, 'name')
+      $scope.selectSuite($scope.suites[0])
     })
 
     // make console hideable
@@ -92,8 +98,11 @@ define(deps, function(angular) {
           }
         }
         koan.compile = function() {
+          // TODO we can rewrite it to use only angular
+          // and to remove one dependency
           $('#console').offcanvas('show')
-          $scope.consoleText += compileKoanTxt
+          $scope.consoleText = $sce.trustAsHtml($scope.consoleText
+                  + compileKoanTxt)
           $('#console').animate({
             scrollTop: $("#console")[0].scrollHeight
           }, "slow");
@@ -102,8 +111,8 @@ define(deps, function(angular) {
             koan: editor.getValue(),
             suite: suite.name
           }, function(result) {
-            $scope.consoleText += ansi2html.toHtml(result.output).split('\n')
-                    .join('<br>')
+            var html = ansi2html.toHtml(result.output).split('\n').join('<br>')
+            $scope.consoleText = $sce.trustAsHtml($scope.consoleText + html)
             $('#console').animate({
               scrollTop: $("#console")[0].scrollHeight
             }, "slow");
@@ -139,6 +148,6 @@ define(deps, function(angular) {
   };
 
   appControllers.controller('EditorController', ['$scope', 'Suite', 'Koan',
-      'Compiler', 'ansi2html', editorController]);
+      'Compiler', 'ansi2html', '$filter', '$sce', editorController]);
 
 });
