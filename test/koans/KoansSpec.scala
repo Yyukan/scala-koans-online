@@ -48,8 +48,12 @@ class KoansSpec extends Specification {
     }
 
     "test parse context " in  {
+
       val context = KoansParser.parseSuiteContext(aboutConstructors())
-      context shouldEqual ""
+      context.contains("AboutClassWithNoClassParameter") shouldEqual true
+      context.contains("AboutConstructorWithAuxiliaryConstructor") shouldEqual true
+      context.contains("KoanSuite") shouldEqual false
+      context.contains("koan") shouldEqual false
     }
   }
 

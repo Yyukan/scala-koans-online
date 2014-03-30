@@ -19,6 +19,7 @@ object KoansParser {
 
   /** koan description pattern */
   val koanPattern = """koan\s*\(\s*\"{1,3}([\w\W]+?)\"{1,3}\s*\)""".r
+  val suitePattern = """class\s*\w*\s*extends\s*KoanSuite\s*\{""".r
 
   /**
    * Finds and returns block of code between {}
@@ -95,7 +96,28 @@ object KoansParser {
    */
   def parseSuiteContext(source: String): String = {
     // TODO:oshtykhno fix
-    ""
+    suitePattern.findFirstIn(source) match {
+      case Some(value) => {
+        // this code block contains context and all koans, next step will be to remove koans
+        var suiteCodeBlock = source.substring(source.lastIndexOf(value) + value.length, source.lastIndexOf('}'))
+
+        // list of koan positions (begin, end)
+        val koanIndexes:List[(Int, Int)] = koanPattern.findAllMatchIn(suiteCodeBlock).toList.map( koan => {
+          val koanCodeBlock = block(suiteCodeBlock.substring(koan.start, suiteCodeBlock.length - 1))
+          (koan.start, suiteCodeBlock.lastIndexOf(koanCodeBlock) + koanCodeBlock.length)
+        })
+
+        val koanBlocks:List[String] = koanIndexes.map { case (begin , end) =>
+           suiteCodeBlock.substring(begin, end)
+        }
+
+        koanBlocks.foreach( block => suiteCodeBlock = suiteCodeBlock.replace(block, ""))
+
+        // filter empty lines
+        suiteCodeBlock.linesIterator.filter(_.trim.length > 0).toList.mkString("\n")
+      }
+      case None => ""
+    }
   }
 
   /**
