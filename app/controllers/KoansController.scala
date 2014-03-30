@@ -3,7 +3,7 @@ package controllers
 import play.api._
 import play.api.mvc._
 import models.{ KoansInterpreter, KoansParser, Koan, KoanSuite }
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json._
 import reactivemongo.api._
@@ -86,14 +86,17 @@ object KoansController extends Controller with MongoController {
    * Returns list of koans for specified suite
    */
   def koans(suite: String) = Action.async {
-    val filter = Json.obj("suite" -> suite)
+    val future: Future[Option[KoanSuite]] = suiteCollection.find(Json.obj("name" -> suite)).one[KoanSuite]
 
-    val cursor: Cursor[Koan] = koansCollection.find(filter).cursor[Koan]
+    future.flatMap { koanSuite =>
+      val cursor: Cursor[Koan] = koansCollection.find(Json.obj("suite" -> suite)).cursor[Koan]
 
-    val result: Future[List[Koan]] = cursor.collect[List]()
+      val result: Future[List[Koan]] = cursor.collect[List]()
 
-    result.map { list =>
-      Ok(Json.obj("name" -> suite, "koans" -> Json.toJson(list.map(koan => koan.order))))
+      result.map { list =>
+
+        Ok(Json.obj("name" -> suite, "context" -> koanSuite.get.context, "koans" -> Json.toJson(list.map(koan => koan.order))))
+      }
     }
   }
 

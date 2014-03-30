@@ -8,7 +8,7 @@ case class Koan(description: String, content: String, suite: String, order: Long
 /**
  * Represents Koan Suite
  */
-case class KoanSuite(name: String, context: String = "")
+case class KoanSuite(name: String, context: String)
 
 object JsonFormats {
   import play.api.libs.json.Json

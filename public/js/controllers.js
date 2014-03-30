@@ -48,6 +48,7 @@ define(deps, function(angular) {
     // display suites
     Suite.query(function(suites) {
       $scope.suites = $filter('orderBy')(suites, 'name')
+      console.log("Loaded [" + $scope.suites.length + "] suites...")
       $scope.selectSuite($scope.suites[0])
     })
 
@@ -119,8 +120,13 @@ define(deps, function(angular) {
           })
         }
 
-        // set editor content
-        editor.setValue(koan.content);
+        // set editor content (koan context and koan code block)
+        if (suite.context != "") {
+          editor.setValue(suite.context + "\n\n" + koan.content);
+        }
+        else {
+          editor.setValue(koan.content);
+        }
         editor.gotoLine(0);
 
         // shortcuts

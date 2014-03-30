@@ -31,7 +31,9 @@ object KoansInterpreter {
     import org.scalatest.matchers.ShouldMatchers
     import support.KoanSuite
 
-    class ${suite} extends KoanSuite with ShouldMatchers { ${koan} }"""
+    class ${suite} extends KoanSuite with ShouldMatchers {
+    ${koan}
+    }"""
 
     // first interpret koan itself and then execute
     val result = exec(source, in)
