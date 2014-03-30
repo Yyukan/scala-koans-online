@@ -20,9 +20,9 @@ class KoansSpec extends Specification {
     resource.mkString
   }
 
-  def aboutAdvancedOptions: String = resourceAsString("AboutAdvancedOptions")
-  def aboutManifest: String = resourceAsString("AboutManifest")
-  
+  def aboutAdvancedOptions(): String = resourceAsString("AboutAdvancedOptions")
+  def aboutManifest(): String = resourceAsString("AboutManifest")
+  def aboutConstructors(): String = resourceAsString("AboutConstructors")
   
   "Koan parser" should {
 
@@ -31,13 +31,13 @@ class KoansSpec extends Specification {
     }
 
     "test koans size" in {
-      val koans = KoansParser.parse("AboutAdvancedOptions", aboutAdvancedOptions)
+      val koans = KoansParser.parse("AboutAdvancedOptions", aboutAdvancedOptions())
 
       koans.size shouldEqual 3
     }
 
     "test parse about manifest " in {
-      val koans = KoansParser.parse("AboutManifest", aboutManifest)
+      val koans = KoansParser.parse("AboutManifest", aboutManifest())
 
       koans.size shouldEqual 2
     }
@@ -46,6 +46,12 @@ class KoansSpec extends Specification {
       val koans = KoansParser.load()
       koans.size shouldEqual 51
     }
+
+    "test parse context " in  {
+      val context = KoansParser.parseSuiteContext(aboutConstructors())
+      context shouldEqual ""
+    }
   }
+
 }
 
