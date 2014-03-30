@@ -50,7 +50,7 @@
 	<ul class="pagination">
 		<li ng-class="{disabled:koan.isFirst}"><a href
 			ng-click="koan.prev()">&laquo;</a></li>
-		<li ng-repeat="koanId in suite.koans | orderBy"
+		<li ng-repeat="koanId in suite.koans"
 			ng-click="selectKoan(koanId)"
 			ng-class="{active:(koanId === koan.id)}"><a href>{{koanId}}</a></li>
 		<li ng-class="{disabled:koan.isLast}"><a href

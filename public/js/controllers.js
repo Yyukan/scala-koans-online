@@ -86,6 +86,7 @@ define(deps, function(angular) {
         // koans navigation
         var suite = $scope.suite
         var koans = suite.koans
+
         koan.isFirst = koans[0] === koan.id
         koan.isLast = koans[koans.length - 1] === koan.id
         koan.next = function() {

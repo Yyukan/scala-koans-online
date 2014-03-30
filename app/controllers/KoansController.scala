@@ -94,8 +94,7 @@ object KoansController extends Controller with MongoController {
       val result: Future[List[Koan]] = cursor.collect[List]()
 
       result.map { list =>
-
-        Ok(Json.obj("name" -> suite, "context" -> koanSuite.get.context, "koans" -> Json.toJson(list.map(koan => koan.order))))
+        Ok(Json.obj("name" -> suite, "context" -> koanSuite.get.context, "koans" -> Json.toJson(list.map(koan => koan.order).sorted)))
       }
     }
   }
