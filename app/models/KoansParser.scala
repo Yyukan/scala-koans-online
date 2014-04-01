@@ -18,7 +18,7 @@ import java.util.zip.ZipEntry
 object KoansParser {
 
   /** koan description pattern */
-  val koanPattern = """koan\s*\(\s*\"{1,3}([\w\W]+?)\"{1,3}\s*\)""".r
+  val koanPattern = """koan\s*\([\n\r]*\s*\"{1,3}([\w\W\|\!]+?)\"{1,3}(.stripMargin)?\s*\)""".r
   val suitePattern = """class\s*\w*\s*extends\s*KoanSuite\s*\{""".r
 
   /**
@@ -64,7 +64,7 @@ object KoansParser {
    */
   def parse(suite: String, source: String):Seq[Koan] = {
     koanPattern.findAllMatchIn(source).zipWithIndex.map( koan => {
-      Koan(suite = suite, description = koan._1.group(1),
+      Koan(suite = suite, description = koan._1.group(1).stripMargin.replaceAll("[\\n\\r]*", ""),
         content = block(source.substring(koan._1.start, source.length - 1)), order = koan._2)
     }).toSeq
   }
