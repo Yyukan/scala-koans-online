@@ -95,7 +95,6 @@ object KoansParser {
    * @return suite context
    */
   def parseSuiteContext(source: String): String = {
-    // TODO:oshtykhno fix
     suitePattern.findFirstIn(source) match {
       case Some(value) => {
         // this code block contains context and all koans, next step will be to remove koans
@@ -107,10 +106,12 @@ object KoansParser {
           (koan.start, suiteCodeBlock.lastIndexOf(koanCodeBlock) + koanCodeBlock.length)
         })
 
+        // replace start end position with block of the code
         val koanBlocks:List[String] = koanIndexes.map { case (begin , end) =>
            suiteCodeBlock.substring(begin, end)
         }
 
+        // remove every koan from suite
         koanBlocks.foreach( block => suiteCodeBlock = suiteCodeBlock.replace(block, ""))
 
         // filter empty lines
