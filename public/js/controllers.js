@@ -5,6 +5,19 @@
 var deps = ['angular', 'ace', 'ui-bootstrap', 'angular-sanitize',
     'ext/ansi2html']
 
+// The suite methods that are used to enrich the current selected suite
+var enrichedSuite = {
+  resolvedKoans: [],
+  saveState: function() {
+    console.log('TBD: saving state of suite ...')
+  },
+  addResolved: function(koanId) {
+    if (this.resolvedKoans.indexOf(koanId) < 0) {
+      this.resolvedKoans.push(koanId)
+    }
+  }
+}
+
 define(deps, function(angular) {
 
   if (!ace) throw Error('ace editor is not loaded!')
@@ -69,6 +82,12 @@ define(deps, function(angular) {
 
       Suite.get(suite, function(suite) {
         suite.selected = true;
+
+        // enrich suite with some custom methods
+        angular.extend(suite, enrichedSuite)
+        suite.resolvedKoans = []
+        console.log(suite.resolvedKoans)
+
         $scope.suite = suite;
         $scope.selectKoan(suite.koans[0])
       });
@@ -86,11 +105,12 @@ define(deps, function(angular) {
 
         // koans navigation
         var suite = $scope.suite
+
         var koans = suite.koans
 
         koan.isFirst = koans[0] === koan.id
         koan.isLast = koans[koans.length - 1] === koan.id
-        
+
         koan.next = function() {
           if (!koan.isLast) {
             $scope.selectKoan(++suite.selectedKoan)
@@ -115,6 +135,12 @@ define(deps, function(angular) {
             koan: editor.getValue(),
             suite: suite.name
           }, function(result) {
+
+            if (result.returnCode === 0) {
+              suite.addResolved(koan.id)
+              suite.saveState()
+            }
+
             var html = ansi2html.toHtml(result.output).split('\n').join('<br>')
             $scope.consoleText = $sce.trustAsHtml($scope.consoleText + html)
             $('#console').animate({

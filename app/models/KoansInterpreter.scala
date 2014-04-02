@@ -38,7 +38,7 @@ object KoansInterpreter {
     // first interpret koan itself and then execute
     val result = exec(source, in)
     result._2 match {
-      case 0 => exec(s"(new ${suite}).execute()", in)
+      case x if x <= 0 => exec(s"(new ${suite}).execute()", in)
       case error => result
     }
   }
@@ -48,7 +48,11 @@ object KoansInterpreter {
     val stream = new PrintStream(buffer)
     try {
       Console.withOut(stream)(in.interpret(cmd)) match {
-        case IR.Success => (buffer.toString, 0)
+        case IR.Success => {
+          val result = buffer.toString()
+          val isSuccess: Boolean = result.split("\n").last.contains("SUCCESS")
+          if (isSuccess) (result, 0) else (result, -1)
+        }
         case IR.Error => (buffer.toString, 1)
         case IR.Incomplete => (buffer.toString, 2)
       }
