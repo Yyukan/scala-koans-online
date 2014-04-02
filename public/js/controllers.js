@@ -77,6 +77,7 @@ define(deps, function(angular) {
     // select koan
     $scope.selectKoan = function(id) {
       var suite = $scope.suite
+      suite.selectedKoan = id
       Koan.get({
         suite: suite.name,
         koan: id
@@ -89,14 +90,15 @@ define(deps, function(angular) {
 
         koan.isFirst = koans[0] === koan.id
         koan.isLast = koans[koans.length - 1] === koan.id
+        
         koan.next = function() {
           if (!koan.isLast) {
-            $scope.selectKoan(koans.next())
+            $scope.selectKoan(++suite.selectedKoan)
           }
         }
         koan.prev = function() {
           if (!koan.isFirst) {
-            $scope.selectKoan(koans.prev())
+            $scope.selectKoan(--suite.selectedKoan)
           }
         }
         koan.compile = function() {
@@ -124,8 +126,7 @@ define(deps, function(angular) {
         // set editor content (koan context and koan code block)
         if (suite.context != "") {
           editor.setValue(suite.context + "\n\n" + koan.content);
-        }
-        else {
+        } else {
           editor.setValue(koan.content);
         }
         editor.gotoLine(0);

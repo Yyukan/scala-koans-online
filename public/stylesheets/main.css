@@ -37,10 +37,10 @@ html {
 }
 
 #console {
-	width: 30em;
+	width: 50em;
 	z-index: 10000;
 	position: fixed;
-	right: -29.99em;
+	right: -49.99em;
 	top: 7em;
 	bottom: 3.5em;
 	border-color: #e7e7e7;
