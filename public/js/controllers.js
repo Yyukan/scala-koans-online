@@ -108,6 +108,11 @@ define(deps, function(angular) {
         suite: suite.name,
         koan: id
       }, function(koan) {
+        
+        if ($scope.koan) {
+          $scope.koan.saveState()          
+        }
+        
         $scope.koan = koan
 
         // koans navigation
@@ -134,6 +139,8 @@ define(deps, function(angular) {
 
         // compile koan
         koan.compile = function() {
+          koan.content = editor.getValue()
+          
           // TODO we can rewrite it to use only angular
           // and to remove one dependency
           $('#console').offcanvas('show')
@@ -150,8 +157,11 @@ define(deps, function(angular) {
 
             if (result.returnCode === 0) {
               suite.addResolved(koan.id)
-              suite.saveState()
             }
+            
+            // save state
+            suite.saveState()
+            koan.saveState()
 
             var html = ansi2html.toHtml(result.output).split('\n').join('<br>')
             $scope.consoleText = $sce.trustAsHtml($scope.consoleText + html)
@@ -160,8 +170,11 @@ define(deps, function(angular) {
             }, "slow");
           })
         }
+        
+        koan.restoreState()
 
         // set editor content (koan context and koan code block)
+        // TODO a problem with restoring state for suite.context
         if (suite.context != "") {
           editor.setValue(suite.context + "\n\n" + koan.content);
         } else {
