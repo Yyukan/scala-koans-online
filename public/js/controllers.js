@@ -84,7 +84,7 @@ define(deps, function(angular) {
       Suite.get(suite, function(suite) {
         // save to local storage
         localStorage["lastSuite"] = suite.name
-        
+
         suite.selected = true;
         suite.restoreState()
 
@@ -93,14 +93,17 @@ define(deps, function(angular) {
         }
 
         $scope.suite = suite;
-        $scope.selectKoan(suite.koans[0])
+        $scope.selectKoan(suite.selectedKoan || suite.koans[0])
       });
     };
 
     // select koan
     $scope.selectKoan = function(id) {
       var suite = $scope.suite
+      
       suite.selectedKoan = id
+      suite.saveState()
+      
       Koan.get({
         suite: suite.name,
         koan: id
