@@ -57,12 +57,12 @@ html {
 
 .pagination > li > a.resolved {
 	color: white;
-	background-color: #4cae4c;
+	background-color: #5cb85c;
 	border-color: #4cae4c;
 }
 
 .pagination > li.active > a.resolved {
 	color: white;
-	background-color: #4cae4c;
-	border-color: #428bca;
+	background-color: #47a447;
+	border-color: #398439;
 }

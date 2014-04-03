@@ -49,7 +49,21 @@ define(deps, function(angular) {
     Suite.query(function(suites) {
       $scope.suites = $filter('orderBy')(suites, 'name')
       console.log("Loaded [" + $scope.suites.length + "] suites...")
-      $scope.selectSuite($scope.suites[0])
+
+      var suiteToSelect = $scope.suites[0]
+
+      // restore last suite from storage
+      var lastSuiteName = localStorage['lastSuite']
+      if (lastSuiteName) {
+        var found = $scope.suites.filter(function(suite) {
+          return suite.name === lastSuiteName;
+        })[0]
+        if (found) {
+          suiteToSelect = found
+        }
+      }
+
+      $scope.selectSuite(suiteToSelect)
     })
 
     // make console hideable
@@ -68,12 +82,16 @@ define(deps, function(angular) {
       });
 
       Suite.get(suite, function(suite) {
+        // save to local storage
+        localStorage["lastSuite"] = suite.name
+        
         suite.selected = true;
         suite.restoreState()
 
         if ($scope.suite) {
           $scope.suite.saveState()
         }
+
         $scope.suite = suite;
         $scope.selectKoan(suite.koans[0])
       });
@@ -97,16 +115,21 @@ define(deps, function(angular) {
         koan.isFirst = koans[0] === koan.id
         koan.isLast = koans[koans.length - 1] === koan.id
 
+        // go to next koan
         koan.next = function() {
           if (!koan.isLast) {
             $scope.selectKoan(++suite.selectedKoan)
           }
         }
+
+        // go to previous koan
         koan.prev = function() {
           if (!koan.isFirst) {
             $scope.selectKoan(--suite.selectedKoan)
           }
         }
+
+        // compile koan
         koan.compile = function() {
           // TODO we can rewrite it to use only angular
           // and to remove one dependency

@@ -13,17 +13,34 @@ define(['angular', 'angular-resource'], function(angular) {
     var Suite = $resource('suites/:name', {}, {})
 
     // enrich suite with custom methods
-    Suite.resolvedKoans = [];
+
+    /**
+     * Add resolved koan id
+     */
     Suite.prototype.addResolved = function(koanId) {
+      if (!this.resolvedKoans) {
+        this.resolvedKoans = []
+      }
       if (this.resolvedKoans.indexOf(koanId) < 0) {
         this.resolvedKoans.push(koanId)
       }
     };
+    
+    /**
+     * Save state of the suite
+     */
     Suite.prototype.saveState = function() {
       console.log('saving state of suite:' + this.name)
       localStorage[this.name] = angular.toJson(this)
     };
+    
+    /**
+     * Restore state of the suite
+     */
     Suite.prototype.restoreState = function() {
+      if (!this.resolvedKoans) {
+        this.resolvedKoans = []
+      }
       if (!localStorage[this.name]) { return; }
       console.log('restoring state of suite:' + this.name)
       try {
