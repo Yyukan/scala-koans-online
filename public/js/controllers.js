@@ -45,6 +45,9 @@ define(deps, function(angular) {
     editor.getSession().setMode("ace/mode/scala");
     editor.setFontSize('14px')
 
+    $scope.completedSuites = 0;
+    $scope.completedKoans = 0;
+
     // display suites
     Suite.query(function(suites) {
       $scope.suites = $filter('orderBy')(suites, 'name')
@@ -146,6 +149,7 @@ define(deps, function(angular) {
           }, function(result) {
 
             if (result.returnCode === 0) {
+              $scope.completedKoans++;
               suite.addResolved(koan.id)
               suite.saveState()
             }

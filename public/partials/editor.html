@@ -46,18 +46,25 @@
 
 <shortcut></shortcut>
 
-<div class='container'>
-	<ul class="pagination">
-		<li ng-class="{disabled:koan.isFirst}"><a href
-			ng-click="koan.prev()">&laquo;</a></li>
-		<li ng-repeat="koanId in suite.koans" ng-click="selectKoan(koanId)"
-			ng-class="{active:(koanId === koan.id)}"><a href
-			ng-class="{resolved: suite.resolvedKoans.indexOf(koanId) >= 0}">{{koanId}}</a></li>
-		<li ng-class="{disabled:koan.isLast}"><a href
-			ng-click="koan.next()">&raquo;</a></li>
-	</ul>
+<div class="row" style="padding: 0px 0px 0px 20px">
+    <div class="col-md-1">
+        <h2>{{completedSuites}}</h2><h5><p class="text-muted">suites completed</p></h5>
+    </div>
+    <div class="col-md-1">
+        <h2>{{completedKoans}}</h2><h5><p class="text-muted">koans completed</p></h5>
+    </div>
+    <div class="col-md-10">
+        <ul class="pagination">
+            <li ng-class="{disabled:koan.isFirst}"><a href
+                                                      ng-click="koan.prev()">&laquo;</a></li>
+            <li ng-repeat="koanId in suite.koans" ng-click="selectKoan(koanId)"
+                ng-class="{active:(koanId === koan.id)}"><a href
+                                                            ng-class="{resolved: suite.resolvedKoans.indexOf(koanId) >= 0}">{{koanId}}</a></li>
+            <li ng-class="{disabled:koan.isLast}"><a href
+                                                     ng-click="koan.next()">&raquo;</a></li>
+        </ul>
+    </div>
 </div>
-
 <div id="console" ng-bind-html="consoleText"></div>
 
 <div id="editor-container">
