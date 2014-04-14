@@ -3,7 +3,7 @@ package controllers
 import play.api._
 import play.api.mvc._
 import models.{ KoansInterpreter, KoansParser, Koan, KoanSuite }
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json._
 import reactivemongo.api._
@@ -12,13 +12,14 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 import scala.collection.Map
 import models.JsonFormats.koanFormat
 import models.JsonFormats.suiteFormat
-import reactivemongo.bson.BSONDocument
 
 /**
- * Controller which is responsible for koans manipulations
+ * Controller represents koans API
  */
 object KoansController extends Controller with MongoController {
+  /** koans collection */
   private def koansCollection: JSONCollection = db.collection[JSONCollection]("koans")
+  /** suite collection */
   private def suiteCollection: JSONCollection = db.collection[JSONCollection]("suite")
 
   /**
@@ -53,6 +54,9 @@ object KoansController extends Controller with MongoController {
     Ok(s"Loaded ${suites.values.toList.size} koans, finished...")
   }
 
+  /**
+   * Returns list of koan suites as JSON
+   */
   def suitesList = Action.async {
     val cursor: Cursor[KoanSuite] = suiteCollection.find(Json.obj()).cursor[KoanSuite]
     val result: Future[List[KoanSuite]] = cursor.collect[List]()
@@ -61,6 +65,11 @@ object KoansController extends Controller with MongoController {
     }
   }
 
+  /**
+   * Returns list of koan suites based on query as JSON
+   *
+   * @param query - suite name as part of regexp expression
+   */
   def suites(query: String) = Action.async {
     val jsonQuery = Json.obj("name" -> Json.obj("$regex" -> s"$query.*", "$options" -> "i"))
     val cursor: Cursor[KoanSuite] = suiteCollection.find(jsonQuery).cursor[KoanSuite]
@@ -70,6 +79,9 @@ object KoansController extends Controller with MongoController {
     }
   }
 
+  /**
+   * Returns list of all koans as JSON
+   */
   def koansList = Action.async {
     val result: Future[List[Koan]] = koansAll()
     result.map { result =>
@@ -77,6 +89,10 @@ object KoansController extends Controller with MongoController {
     }
   }
 
+  /**
+   * Returns list of all koans as future
+   * @return - future with koans list
+   */
   def koansAll(): Future[List[Koan]] = {
     val cursor: Cursor[Koan] = koansCollection.find(Json.obj()).cursor[Koan]
     cursor.collect[List]()
@@ -115,7 +131,6 @@ object KoansController extends Controller with MongoController {
 
     result.map { list =>
       // check if empty - go to the next suite
-
       val koan: Koan = list.head
 
       Ok(Json.obj(
@@ -127,7 +142,7 @@ object KoansController extends Controller with MongoController {
   }
 
   /**
-   * Compiles and executes koan
+   * Compiles and interprets koan, returns result as JSON
    */
   def compile = Action(parse.json) { request =>
     val json: JsValue = request.body

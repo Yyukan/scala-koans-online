@@ -1,11 +1,10 @@
 package controllers
 
 import play.api.mvc._
-import scala.concurrent.{ Await, Future }
-import models.KoanSuite
-import models.Koan
-import scala.concurrent.ExecutionContext.Implicits.global
 
+/**
+ * Entry point, just returns index page
+ */
 object Application extends Controller {
 
   def index = Action {

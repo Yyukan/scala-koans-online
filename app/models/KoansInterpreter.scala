@@ -6,27 +6,31 @@ import scala.tools.nsc.interpreter._
 import scala.tools.nsc.util.ClassPath
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
-import play.api.Logger
-import scala.tools.nsc.interpreter.Logger
 
 /**
  * Compiles and execute koan
  */
 object KoansInterpreter {
 
+  /** add additional libraries to IMain class path */
   val settings = new Settings
   settings.bootclasspath.value +=
     ClassPath.join(
       scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/scala-library.jar",
       scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/scalatest_2.10-2.0.jar")
+  /** added additional source folder to IMain class path */
   settings.sourcepath.value +=
     scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/src"
 
+  /**
+   * Interprets koan and returns result as pair
+   */
   def execute(koan: String, suite: String): (String, Int) = {
     val in = new IMain(settings) {
       override protected def parentClassLoader = settings.getClass.getClassLoader
     }
 
+    // create koan source as string with context
     val source = s"""
     import org.scalatest.matchers.ShouldMatchers
     import support.KoanSuite
