@@ -18,41 +18,36 @@ define(['angular', 'angular-resource'], function(angular) {
      * Add resolved koan id
      */
     Suite.prototype.addResolved = function(koanId) {
-      if (!this.resolvedKoans) {
-        this.resolvedKoans = []
-      }
+      this.resolvedKoans = this.resolvedKoans || [];
+
       if (this.resolvedKoans.indexOf(koanId) < 0) {
         this.resolvedKoans.push(koanId)
       }
     };
-    
+
     /**
      * Save state of the suite
      */
     Suite.prototype.saveState = function() {
-      console.log('saving state of suite:' + this.name)
+      this.resolvedKoans = this.resolvedKoans || [];
+
       localStorage[this.name] = angular.toJson(this)
     };
-    
+
     /**
      * Restore state of the suite
      */
     Suite.prototype.restoreState = function() {
-      if (!this.resolvedKoans) {
-        this.resolvedKoans = []
-      }
+      this.resolvedKoans = this.resolvedKoans || [];
+
       if (!localStorage[this.name]) { return; }
-      console.log('restoring state of suite:' + this.name)
       try {
         var savedSuite = angular.fromJson(localStorage[this.name])
-        if (savedSuite.resolvedKoans instanceof Array) {
-          this.resolvedKoans = savedSuite.resolvedKoans
-        } else {
-          this.resolvedKoans = []
-        }
+
+        this.resolvedKoans = savedSuite.resolvedKoans || [];
+        this.selectedKoan = savedSuite.selectedKoan || 0;
       } catch (e) {
         console.error(e)
-        this.resolvedKoans = []
       }
     }
 
@@ -60,7 +55,22 @@ define(['angular', 'angular-resource'], function(angular) {
   }])
 
   services.factory('Koan', ['$resource', function($resource) {
-    return $resource('koans/:suite/:koan', {}, {})
+    var Koan = $resource('koans/:suite/:koan', {}, {});
+
+    // enrich koan with custom methods
+
+    Koan.prototype.saveState = function() {
+      localStorage[this.suite + this.id] = angular.toJson(this)
+    };
+
+    Koan.prototype.restoreState = function() {
+      var savedKoan = angular.fromJson(localStorage[this.suite + this.id])
+      if (savedKoan) {
+        this.content = savedKoan.content        
+      }
+    };
+
+    return Koan;
   }])
 
   services.factory('AdminKoans', ['$resource', function($resource) {
