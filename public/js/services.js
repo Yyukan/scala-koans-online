@@ -16,14 +16,23 @@ define(['angular', 'angular-resource'], function(angular) {
 
     /**
      * Add resolved koan id
+     *
+     * @return true if new koan is resolved
+     *         false if koan has already been solved
      */
     Suite.prototype.addResolved = function(koanId) {
       this.resolvedKoans = this.resolvedKoans || [];
 
       if (this.resolvedKoans.indexOf(koanId) < 0) {
         this.resolvedKoans.push(koanId)
+        return true;
       }
+      return false;
     };
+
+    Suite.prototype.isComplete = function() {
+      return this.resolvedKoans.length == this.koans.length;
+    }
 
     /**
      * Save state of the suite

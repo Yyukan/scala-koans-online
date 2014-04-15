@@ -45,8 +45,18 @@ define(deps, function(angular) {
     editor.getSession().setMode("ace/mode/scala");
     editor.setFontSize('14px')
 
-    $scope.completedSuites = 0;
-    $scope.completedKoans = 0;
+    // initialize statistics storage
+    if (localStorage['completedKoans'] == undefined) {
+      localStorage['completedKoans'] = 0;
+    }
+
+    if (localStorage['completedSuites'] == undefined) {
+      localStorage['completedSuites'] = JSON.stringify(new Array());
+    }
+
+    // display statistics
+    $scope.completedKoans = localStorage['completedKoans'];
+    $scope.completedSuites = JSON.parse(localStorage['completedSuites']).length;
 
     // display suites
     Suite.query(function(suites) {
@@ -65,11 +75,11 @@ define(deps, function(angular) {
           suiteToSelect = found
         }
       }
-
+      console.log("Select suite [" + suiteToSelect.name + "]");
       $scope.selectSuite(suiteToSelect)
     })
 
-    // make console hideable
+    // make console hide out
     $scope.consoleText = "Welcome to Scala Interpreter!<br>"
     $('#console').hover(function() {
       $(this).offcanvas('show')
@@ -159,10 +169,22 @@ define(deps, function(angular) {
           }, function(result) {
 
             if (result.returnCode === 0) {
-              $scope.completedKoans++;
-              suite.addResolved(koan.id)
+
+              if(suite.addResolved(koan.id)) {
+                  // update statistics (completed koans and suites)
+                  localStorage['completedKoans']++;
+
+                  if (suite.isComplete()) {
+                    var tmp = JSON.parse(localStorage['completedSuites']);
+                    tmp.push(suite.name);
+                    localStorage['completedSuites'] = JSON.stringify(tmp);
+                  }
+
+                  $scope.completedKoans = localStorage['completedKoans'];
+                  $scope.completedSuites = JSON.parse(localStorage['completedSuites']).length;
+              }
             }
-            
+
             // save state
             suite.saveState()
             koan.saveState()
