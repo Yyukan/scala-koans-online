@@ -137,7 +137,7 @@ object KoansController extends Controller with MongoController {
         "id" -> koan.order,
         "suite" -> koan.suite,
         "description" -> koan.description,
-        "content" -> s"""  koan(\"${koan.description}\") ${koan.content}"""))
+        "content" -> s"""  koan(\"\"\"${koan.description}\"\"\") ${koan.content}"""))
     }
   }
 
