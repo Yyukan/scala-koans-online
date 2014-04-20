@@ -1,1 +1,1 @@
-web: play run --http.port=$PORT $PLAY_OPTS -Dmongodb.uri=$MONGOHQ_URL
+web: target/universal/stage/bin/scala-koans-online  -Dhttp.port=${PORT} -Dmongodb.uri=${MONGOHQ_URL}
