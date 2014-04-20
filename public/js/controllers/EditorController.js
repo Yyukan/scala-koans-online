@@ -11,12 +11,19 @@ define(['angular', '../controllers'], function(angular, appControllers) {
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/eclipse");
     editor.getSession().setMode("ace/mode/scala");
-    editor.setFontSize('14px')
+    editor.setFontSize('14px');
 
+    // on select suite from navbar
     $rootScope.$on('selectSuite', function(event, suite) {
       $scope.suite = suite;
       $scope.selectKoan(suite.selectedKoan || suite.koans[0])
-    })
+    });
+    // on compile from navbar
+    $rootScope.$on('compileCurrentKoan', function() {
+      if ($scope.koan) {
+        $scope.koan.compile();
+      }
+    });
 
     // select koan
     $scope.selectKoan = function(id) {
@@ -77,7 +84,6 @@ define(['angular', '../controllers'], function(angular, appControllers) {
 
         // shortcuts
         $scope.keyPressed = function(e) {
-          // console.log(e)
           if (e.ctrlKey && e.keyCode === 10) {
             $scope.koan.compile()
           }

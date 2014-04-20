@@ -36,16 +36,18 @@ define(['angular', '../controllers'], function(angular, appControllers) {
           suiteToSelect = found
         }
       }
-      
+
       $scope.selectSuite(suiteToSelect)
     })
 
+    // select suite
     $scope.selectSuite = function(suite) {
-
+      // clear selected state for all
       $scope.suites.forEach(function(suite) {
         suite.selected = false
       });
 
+      // retrieve complete suite
       Suite.get(suite, function(suite) {
         // save to local storage
         localStorage["lastSuite"] = suite.name;
@@ -56,11 +58,10 @@ define(['angular', '../controllers'], function(angular, appControllers) {
         if ($scope.suite) {
           $scope.suite.saveState();
         }
-        
+
         $scope.suite = suite;
         $rootScope.$emit('selectSuite', suite);
       });
-
     };
 
     // search suite
@@ -73,8 +74,12 @@ define(['angular', '../controllers'], function(angular, appControllers) {
 
       $scope.searchedSuite = ''
       $scope.focusSearch = false
-    }
+    };
 
+    // compile
+    $scope.compile = function() {
+      $rootScope.$emit('compileCurrentKoan');
+    }
   };
 
   var deps = ['$scope', '$rootScope', 'Suite', '$filter', NavbarController];
