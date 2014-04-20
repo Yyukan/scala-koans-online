@@ -30,6 +30,26 @@ define(['angular', '../controllers'], function(angular, appControllers) {
     $rootScope.$on('completeKoan', function(event, koan) {
       $scope.suite.addResolved(koan.id);
     });
+    
+    $scope.next = function() {
+      var koan = $scope.koan;
+      var suite = $scope.suite;
+      if (koan.isLast) {
+        $rootScope.$emit('nextSuite');
+      } else {
+        $scope.selectKoan(++suite.selectedKoan);
+      }
+    }
+    
+    $scope.prev = function() {
+      var koan = $scope.koan;
+      var suite = $scope.suite;
+      if (koan.isFirst) {
+        $rootScope.$emit('prevSuite');
+      } else {
+        $scope.selectKoan(--suite.selectedKoan);
+      }
+    }
 
     // select koan
     $scope.selectKoan = function(id) {
@@ -56,20 +76,6 @@ define(['angular', '../controllers'], function(angular, appControllers) {
 
         koan.isFirst = koans[0] === koan.id
         koan.isLast = koans[koans.length - 1] === koan.id
-
-        // go to next koan
-        koan.next = function() {
-          if (!koan.isLast) {
-            $scope.selectKoan(++suite.selectedKoan)
-          }
-        }
-
-        // go to previous koan
-        koan.prev = function() {
-          if (!koan.isFirst) {
-            $scope.selectKoan(--suite.selectedKoan)
-          }
-        }
 
         // compile koan
         koan.compile = function() {

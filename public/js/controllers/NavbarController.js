@@ -28,6 +28,20 @@ define(['angular', '../controllers'], function(angular, appControllers) {
       refreshStatistics();
     });
 
+    $rootScope.$on('prevSuite', function() {
+      var suite = $scope.suite;
+      if (!suite.isFirst) {
+        $scope.selectSuite(suite.prev());
+      }
+    });
+
+    $rootScope.$on('nextSuite', function() {
+      var suite = $scope.suite;
+      if (!suite.isLast) {
+        $scope.selectSuite(suite.next());
+      }
+    });
+
     // display suites
     Suite.query(function(suites) {
       $scope.suites = $filter('orderBy')(suites, 'name');
@@ -70,6 +84,22 @@ define(['angular', '../controllers'], function(angular, appControllers) {
 
         if ($scope.suite) {
           $scope.suite.saveState();
+        }
+        
+        var suites = $scope.suites;
+        
+        suite.isLast = suites[suites.length - 1].name === suite.name
+        suite.isFirst = suites[0].name === suite.name
+        
+        suite.prev = function() {
+          return suites[suites.indexOf(suites.filter(function(s) {
+            return s.name === suite.name;
+          })[0]) - 1];
+        }
+        suite.next = function() {
+          return suites[suites.indexOf(suites.filter(function(s) {
+            return s.name === suite.name;
+          })[0]) + 1];
         }
 
         $scope.suite = suite;
