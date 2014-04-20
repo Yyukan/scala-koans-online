@@ -1,5 +1,6 @@
 <!-- TODO move out partially from here to the main view -->
-<nav class="navbar navbar-inverse navbar-fixed-top background-main" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top background-main"
+	role="navigation" ng-controller="NavbarController">
 	<div class="navbar-header">
 		<a class="navbar-brand" href="/">Scala Koans Online</a>
 	</div>
@@ -40,30 +41,38 @@
 			<span class="glyphicon glyphicon-expand"></span>
 		</button>
 
-        <p class="navbar-text pull-right"><span style="color:white">{{completedKoans}}</span> koans completed&nbsp;</p>
-        <p class="navbar-text pull-right"><span style="color:white">{{completedSuites}}</span> suites completed&nbsp;</p>
+		<p class="navbar-text pull-right">
+			<span style="color: white">{{completedKoans}}</span> koans
+			completed&nbsp;
+		</p>
+		<p class="navbar-text pull-right">
+			<span style="color: white">{{completedSuites}}</span> suites
+			completed&nbsp;
+		</p>
 	</div>
 </nav>
 
-<shortcut></shortcut>
+<div class="editor" ng-controller="EditorController">
+	<shortcut></shortcut>
+	<div class="row" style="padding: 0px 0px 0px 20px">
+		<div class="col-md-1"></div>
+		<div class="col-md-11">
+			<ul class="pagination">
+				<li ng-class="{disabled:koan.isFirst}"><a href
+					ng-click="koan.prev()">&laquo;</a></li>
+				<li ng-repeat="koanId in suite.koans" ng-click="selectKoan(koanId)"
+					ng-class="{active:(koanId === koan.id)}"><a href
+					ng-class="{resolved: suite.resolvedKoans.indexOf(koanId) >= 0}">{{koanId}}</a></li>
+				<li ng-class="{disabled:koan.isLast}"><a href
+					ng-click="koan.next()">&raquo;</a></li>
+			</ul>
+		</div>
+	</div>
 
-<div class="row" style="padding: 0px 0px 0px 20px">
-    <div class="col-md-1">
-    </div>
-    <div class="col-md-11">
-        <ul class="pagination">
-            <li ng-class="{disabled:koan.isFirst}"><a href
-                                                      ng-click="koan.prev()">&laquo;</a></li>
-            <li ng-repeat="koanId in suite.koans" ng-click="selectKoan(koanId)"
-                ng-class="{active:(koanId === koan.id)}"><a href
-                                                            ng-class="{resolved: suite.resolvedKoans.indexOf(koanId) >= 0}">{{koanId}}</a></li>
-            <li ng-class="{disabled:koan.isLast}"><a href
-                                                     ng-click="koan.next()">&raquo;</a></li>
-        </ul>
-    </div>
+	<div id="editor-container">
+		<pre id="editor"></pre>
+	</div>
 </div>
-<div id="console" ng-bind-html="consoleText"></div>
 
-<div id="editor-container">
-	<pre id="editor"></pre>
-</div>
+<div ng-controller="ConsoleController" id="console"
+	ng-bind-html="consoleText"></div>

@@ -16,6 +16,10 @@ html {
 	display: none;
 }
 
+.editor {
+	height: 100%;
+}
+
 #editor {
 	margin: 0;
 	position: absolute;
@@ -55,19 +59,19 @@ html {
 	cursor: default;
 }
 
-.pagination > li > a.resolved {
+.pagination>li>a.resolved {
 	color: white;
 	background-color: #5cb85c;
 	border-color: #4cae4c;
 }
 
-.pagination > li.active > a.resolved {
+.pagination>li.active>a.resolved {
 	color: white;
 	background-color: #47a447;
 	border-color: #398439;
 }
 
 .panel-admin .panel-heading {
-    background-color: #5cb85c;
-    color: white;
+	background-color: #5cb85c;
+	color: white;
 }

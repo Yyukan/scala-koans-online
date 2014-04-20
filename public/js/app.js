@@ -13,7 +13,8 @@ require.config({
 // load libs
 require(['angular', 'angular-route', './controllers', './services',
     './directives', 'controllers/AdminController',
-    'controllers/EditorController'], function(angular) {
+    'controllers/EditorController', 'controllers/NavbarController',
+    'controllers/ConsoleController'], function(angular) {
 
   // Declare app level module which depends on filters, and services
   var app = angular.module('koansApp', ['ngRoute', 'koansControllers',
@@ -23,8 +24,7 @@ require(['angular', 'angular-route', './controllers', './services',
     $routeProvider.when('/home', {
       templateUrl: 'partials/home.html'
     }).when('/editor', {
-      templateUrl: 'partials/editor.html',
-      controller: 'EditorController'
+      templateUrl: 'partials/editor.html'
     }).when('/admin', {
       templateUrl: 'partials/admin.html',
       controller: 'AdminController'
