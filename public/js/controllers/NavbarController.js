@@ -6,23 +6,36 @@ define(['angular', '../controllers'], function(angular, appControllers) {
 
   var NavbarController = function($scope, $rootScope, Suite, $filter) {
 
-    // initialize statistics storage
-    if (localStorage['completedKoans'] == undefined) {
-      localStorage['completedKoans'] = 0;
+    function refreshStatistics() {
+      var completedSuites = $scope.suites.reduce(function(x, suite) {
+        if (suite.isComplete) { return x + 1; }
+        return x;
+      }, 0);
+      var completedKoans = $scope.suites.reduce(function(x, suite) {
+        return x + suite.resolvedKoans.length;
+      }, 0);
+      $scope.completedSuites = completedSuites;
+      $scope.completedKoans = completedKoans;
     }
 
-    if (localStorage['completedSuites'] == undefined) {
-      localStorage['completedSuites'] = JSON.stringify(new Array());
-    }
-
-    // display statistics
-    $scope.completedKoans = localStorage['completedKoans'];
-    var parsed = JSON.parse(localStorage['completedSuites']);
-    $scope.completedSuites = parsed.length;
+    $rootScope.$on('completeKoan', function(event, koan) {
+      var suite = $scope.suite;
+      suite.addResolved(koan.id);
+      suite.saveState();
+      $scope.suites.forEach(function(suite) {
+        suite.restoreState();
+      });
+      refreshStatistics();
+    });
 
     // display suites
     Suite.query(function(suites) {
-      $scope.suites = $filter('orderBy')(suites, 'name')
+      $scope.suites = $filter('orderBy')(suites, 'name');
+
+      suites.forEach(function(suite) {
+        suite.restoreState();
+      });
+      refreshStatistics();
 
       var suiteToSelect = $scope.suites[0]
 

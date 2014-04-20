@@ -34,21 +34,7 @@ define(['angular', '../controllers'], function(angular, appControllers) {
       }, function(result) {
 
         if (result.returnCode === 0) {
-
-          if (suite.addResolved(koan.id)) {
-            // update statistics (completed koans and suites)
-            localStorage['completedKoans']++;
-
-            if (suite.isComplete()) {
-              var tmp = JSON.parse(localStorage['completedSuites']);
-              tmp.push(suite.name);
-              localStorage['completedSuites'] = JSON.stringify(tmp);
-            }
-
-            $scope.completedKoans = localStorage['completedKoans'];
-            var parsed = JSON.parse(localStorage['completedSuites']);
-            $scope.completedSuites = parsed.length;
-          }
+          $rootScope.$emit('completeKoan', koan);
         }
 
         // save state

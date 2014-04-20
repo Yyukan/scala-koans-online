@@ -16,13 +16,19 @@ define(['angular', '../controllers'], function(angular, appControllers) {
     // on select suite from navbar
     $rootScope.$on('selectSuite', function(event, suite) {
       $scope.suite = suite;
+      $scope.suite.restoreState();
       $scope.selectKoan(suite.selectedKoan || suite.koans[0])
     });
+    
     // on compile from navbar
     $rootScope.$on('compileCurrentKoan', function() {
       if ($scope.koan) {
         $scope.koan.compile();
       }
+    });
+    
+    $rootScope.$on('completeKoan', function(event, koan) {
+      $scope.suite.addResolved(koan.id);
     });
 
     // select koan
