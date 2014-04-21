@@ -60,7 +60,7 @@ define(['angular', '../controllers'], function(angular, appControllers) {
         suite.saveState()
         koan.saveState()
 
-        var consoleOutput = result.output;
+        var consoleOutput = $("<div/>").text(result.output).html();
         var html = ansi2html.toHtml(consoleOutput).split('\n').join('<br>');
         $scope.consoleText = $sce.trustAsHtml($scope.consoleText + html);
         scroll();
