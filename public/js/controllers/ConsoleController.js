@@ -12,10 +12,17 @@ define(['angular', '../controllers'], function(angular, appControllers) {
     $scope.consoleText = "Welcome to Scala Interpreter!<br>"
     $('#console').hover(function() {
       $(this).offcanvas('show')
-    })
+    });
     $("#console").animate({
       scrollTop: $("#console")[0].scrollHeight
     }, "slow");
+
+    $scope.isPinned = false;
+    $scope.togglePin = function() {
+      $scope.isPinned = !$scope.isPinned;
+      $('#console').attr('data-autohide', !$scope.isPinned)
+      $('#console').offcanvas('show')
+    }
 
     $rootScope.$on('compile', function(event, suite, koan, content) {
 

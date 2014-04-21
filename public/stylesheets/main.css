@@ -59,6 +59,10 @@ html {
 	cursor: default;
 }
 
+#console span {
+	cursor: pointer;
+}
+
 .pagination>li>a.resolved {
 	color: white;
 	background-color: #5cb85c;

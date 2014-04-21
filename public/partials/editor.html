@@ -58,8 +58,8 @@
 		<div class="col-md-1"></div>
 		<div class="col-md-11">
 			<ul class="pagination">
-				<li ng-class="{disabled: koan.isFirst && suite.isFirst}"><a href
-					ng-click="prev()">&laquo;</a></li>
+				<li ng-class="{disabled: koan.isFirst && suite.isFirst}"><a
+					href ng-click="prev()">&laquo;</a></li>
 				<li ng-repeat="koanId in suite.koans" ng-click="selectKoan(koanId)"
 					ng-class="{active:(koanId === koan.id)}"><a href
 					ng-class="{resolved: suite.resolvedKoans.indexOf(koanId) >= 0}">{{koanId}}</a></li>
@@ -74,5 +74,9 @@
 	</div>
 </div>
 
-<div ng-controller="ConsoleController" id="console"
-	ng-bind-html="consoleText"></div>
+
+<div id="console" ng-controller="ConsoleController" data-autohide="true">
+	<span class="glyphicon glyphicon-pushpin" ng-click='togglePin()'
+		tooltip="Pin Console"></span> {{isPinned ? "Pinned" : "Not Pinned"}}
+	<div ng-bind-html="consoleText"></div>
+</div>
