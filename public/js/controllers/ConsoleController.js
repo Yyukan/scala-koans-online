@@ -23,7 +23,7 @@ define(['angular', '../controllers'], function(angular, appControllers) {
     }
 
     function scroll() {
-      $console.animate({
+      $('.console-content').animate({
         scrollTop: $console[0].scrollHeight
       }, "slow");
     }

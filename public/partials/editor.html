@@ -82,7 +82,8 @@
 
 
 <div class="console" ng-controller="ConsoleController">
-	<span class="glyphicon glyphicon-pushpin" ng-click='togglePin()'
-		tooltip="Pin Console"></span> {{isPinned ? "Pinned" : "Not Pinned"}}
-	<div ng-bind-html="consoleText"></div>
+	<span class="console-pinner glyphicon glyphicon-pushpin"
+		ng-class="{'text-success':!isPinned, 'text-danger':isPinned}"
+		ng-click='togglePin()' tooltip="Pin Console"></span>
+	<div class="console-content" ng-bind-html="consoleText"></div>
 </div>
