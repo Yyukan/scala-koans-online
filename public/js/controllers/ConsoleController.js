@@ -5,8 +5,8 @@
 define(['angular', '../controllers'], function(angular, appControllers) {
 
   var compileKoanTxt = "<br>************ Compiling koan ... ************<br>"
-  var ConsoleController = function($scope, $rootScope, Compiler, ansi2html,
-          $sce) {
+  var ConsoleController = function($scope, $rootScope, Compiler, $sanitize,
+          ansi2html, $sce) {
     // make console hide out
     $scope.consoleText = "Welcome to Scala Interpreter!<br>"
 
@@ -24,7 +24,7 @@ define(['angular', '../controllers'], function(angular, appControllers) {
 
     function scroll() {
       $('.console-content').animate({
-        scrollTop: $console[0].scrollHeight
+        scrollTop: $('.console-content')[0].scrollHeight
       }, "slow");
     }
 
@@ -60,15 +60,16 @@ define(['angular', '../controllers'], function(angular, appControllers) {
         suite.saveState()
         koan.saveState()
 
-        var html = ansi2html.toHtml(result.output).split('\n').join('<br>')
-        $scope.consoleText = $sce.trustAsHtml($scope.consoleText + html)
+        var consoleOutput = result.output;
+        var html = ansi2html.toHtml(consoleOutput).split('\n').join('<br>');
+        $scope.consoleText = $sce.trustAsHtml($scope.consoleText + html);
         scroll();
       })
     });
 
   };
 
-  var deps = ['$scope', '$rootScope', 'Compiler', 'ansi2html', '$sce',
-      ConsoleController];
+  var deps = ['$scope', '$rootScope', 'Compiler', '$sanitize', 'ansi2html',
+      '$sce', ConsoleController];
   appControllers.controller('ConsoleController', deps);
 });
