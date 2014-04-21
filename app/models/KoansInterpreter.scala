@@ -22,13 +22,14 @@ object KoansInterpreter {
   settings.sourcepath.value +=
     scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "lib/src"
 
+  lazy val in = new IMain(settings) {
+    override protected def parentClassLoader = settings.getClass.getClassLoader
+  }
+
   /**
    * Interprets koan and returns result as pair
    */
   def execute(koan: String, suite: String): (String, Int) = {
-    val in = new IMain(settings) {
-      override protected def parentClassLoader = settings.getClass.getClassLoader
-    }
 
     // create koan source as string with context
     val source = s"""
@@ -42,8 +43,10 @@ object KoansInterpreter {
     // first interpret koan itself and then execute
     val result = exec(source, in)
     result._2 match {
-      case x if x <= 0 => exec(s"(new ${suite}).execute()", in)
-      case error => result
+      case x if x <= 0 =>
+        exec(s"(new ${suite}).execute()", in)
+      case error =>
+        result
     }
   }
 
