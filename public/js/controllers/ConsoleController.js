@@ -5,35 +5,47 @@
 define(['angular', '../controllers'], function(angular, appControllers) {
 
   var compileKoanTxt = "<br>************ Compiling koan ... ************<br>"
-
   var ConsoleController = function($scope, $rootScope, Compiler, ansi2html,
           $sce) {
     // make console hide out
     $scope.consoleText = "Welcome to Scala Interpreter!<br>"
-    $('#console').hover(function() {
-      $(this).offcanvas('show')
+
+    var $console = $('.console');
+
+    $console.bind('hide.bs.offcanvas', function(e) {
+      if ($scope.isPinned) {
+        e.preventDefault();
+      }
     });
-    $("#console").animate({
-      scrollTop: $("#console")[0].scrollHeight
-    }, "slow");
+
+    function show() {
+      $console.offcanvas('show');
+    }
+
+    function scroll() {
+      $console.animate({
+        scrollTop: $console[0].scrollHeight
+      }, "slow");
+    }
+
+    $console.hover(function() {
+      show();
+      scroll();
+    });
 
     $scope.isPinned = false;
     $scope.togglePin = function() {
       $scope.isPinned = !$scope.isPinned;
-      $('#console').attr('data-autohide', !$scope.isPinned)
-      $('#console').offcanvas('show')
     }
 
     $rootScope.$on('compile', function(event, suite, koan, content) {
 
       // TODO we can rewrite it to use only angular
       // and to remove one dependency
-      $('#console').offcanvas('show')
+      show();
       $scope.consoleText = $sce
-              .trustAsHtml($scope.consoleText + compileKoanTxt)
-      $('#console').animate({
-        scrollTop: $("#console")[0].scrollHeight
-      }, "slow");
+              .trustAsHtml($scope.consoleText + compileKoanTxt);
+      scroll();
 
       Compiler.compile({
         koan: content,
@@ -50,9 +62,7 @@ define(['angular', '../controllers'], function(angular, appControllers) {
 
         var html = ansi2html.toHtml(result.output).split('\n').join('<br>')
         $scope.consoleText = $sce.trustAsHtml($scope.consoleText + html)
-        $('#console').animate({
-          scrollTop: $("#console")[0].scrollHeight
-        }, "slow");
+        scroll();
       })
     });
 

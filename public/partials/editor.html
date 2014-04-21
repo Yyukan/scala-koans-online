@@ -1,7 +1,13 @@
 <!-- TODO move out partially from here to the main view -->
 <nav class="navbar navbar-inverse navbar-fixed-top background-main"
 	role="navigation" ng-controller="NavbarController">
+	<!-- Brand and toggle get grouped for better mobile display -->
 	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse"
+			data-target="#bs-example-navbar-collapse-1">
+			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+			<span class="icon-bar"></span> <span class="icon-bar"></span>
+		</button>
 		<a class="navbar-brand" href="/">Scala Koans Online</a>
 	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -75,7 +81,7 @@
 </div>
 
 
-<div id="console" ng-controller="ConsoleController" data-autohide="true">
+<div class="console" ng-controller="ConsoleController">
 	<span class="glyphicon glyphicon-pushpin" ng-click='togglePin()'
 		tooltip="Pin Console"></span> {{isPinned ? "Pinned" : "Not Pinned"}}
 	<div ng-bind-html="consoleText"></div>
