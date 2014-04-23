@@ -6,7 +6,7 @@ version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   "org.reactivemongo" %% "play2-reactivemongo" % "0.10.0",
-  "org.webjars" %% "webjars-play" % "2.2.1-2",
+  "org.webjars" %% "webjars-play" % "2.2.2",
   "org.webjars" % "jquery" % "2.1.0-2",
   "org.webjars" % "ace" % "01.08.2014",
   "org.webjars" % "jasny-bootstrap" % "3.0.1-p7-1",
